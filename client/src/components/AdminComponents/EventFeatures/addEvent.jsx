@@ -39,6 +39,9 @@ const AddEvent = () => {
         image: "",
         venues: "",
         conferenceType: "",
+        onlineprice: "",
+        offlineprice: "",
+        internationalprice: 0,
         eventType: "",
         conferenceURL: "",
         scheduleConference: [
@@ -420,7 +423,7 @@ const AddEvent = () => {
                 }
               />
             </div>
-            <div className="flex flex-row items-start justify-center gap-5 w-full">
+            <div className="flex flex-row items-start justify-center w-full">
               <div className="w-64">
                 <TextField
                   name="conferenceType"
@@ -465,6 +468,52 @@ const AddEvent = () => {
                   <MenuItem value={"cde"}>CDE</MenuItem>
                 </TextField>
               </div>
+              <div className="flex items-center justify-center gap-3">
+                <TextField
+                  required
+                  name="Online Price"
+                  id="outlined-required"
+                  label="Online Price"
+                  fullWidth
+                  // onChange={handleChange("conferenceURL")}
+                  onChange={(e) =>
+                    setEventData((prev) => ({
+                      ...prev,
+                      onlineprice: e.target.value,
+                    }))
+                  }
+                />
+                <TextField
+                  required
+                  name="Offline Price"
+                  id="outlined-required"
+                  label="Offline Price"
+                  fullWidth
+                  // onChange={handleChange("conferenceURL")}
+                  onChange={(e) =>
+                    setEventData((prev) => ({
+                      ...prev,
+                      offlineprice: e.target.value,
+                    }))
+                  }
+                />
+                <TextField
+                  required
+                  name="International Price"
+                  id="outlined-required"
+                  label="International Price"
+                  fullWidth
+                  // onChange={handleChange("conferenceURL")}
+                  onChange={(e) =>
+                    setEventData((prev) => ({
+                      ...prev,
+                      internationalprice: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex flex-row items-start justify-center gap-5 w-full">
               <TextField
                 required
                 name="conferenceURL"

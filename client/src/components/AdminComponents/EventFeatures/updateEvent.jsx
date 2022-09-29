@@ -406,6 +406,55 @@ const UpdateEvent = () => {
                 <MenuItem value={"cde"}>CDE</MenuItem>
               </TextField>
             </div>
+            <div className="flex items-center justify-center gap-3">
+              <TextField
+                required
+                name="Online Price"
+                value={eventData?.onlineprice}
+                id="outlined-required"
+                helperText="Online Price"
+                fullWidth
+                // onChange={handleChange("conferenceURL")}
+                onChange={(e) =>
+                  setEventData((prev) => ({
+                    ...prev,
+                    onlineprice: e.target.value,
+                  }))
+                }
+              />
+              <TextField
+                required
+                name="Offline Price"
+                id="outlined-required"
+                helperText="Offline Price"
+                value={eventData?.offlineprice}
+                fullWidth
+                // onChange={handleChange("conferenceURL")}
+                onChange={(e) =>
+                  setEventData((prev) => ({
+                    ...prev,
+                    offlineprice: e.target.value,
+                  }))
+                }
+              />
+              <TextField
+                required
+                name="International Price"
+                id="outlined-required"
+                value={eventData?.internationalprice}
+                helperText="International Price"
+                fullWidth
+                // onChange={handleChange("conferenceURL")}
+                onChange={(e) =>
+                  setEventData((prev) => ({
+                    ...prev,
+                    internationalprice: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div className="flex flex-row items-start justify-center gap-5 w-full">
             <TextField
               required
               name="conferenceURL"

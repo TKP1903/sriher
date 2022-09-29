@@ -106,14 +106,10 @@ const OnGoingEvents = () => {
       amount: data.amount,
       currency: "INR",
       name: "ORALPATH",
-      // description: "Payment for the event registration",
-      image: "https://oralpath.sriher.com/resources/assets/images/fav.png",
+      description: "Test Transaction",
+      image: "",
       order_id: data.id,
       // callback_url: `${API_URL}/payment/verify`,
-      prefill: {
-        name: userState.user?.fullName,
-        email: userState.user?.email,
-      },
       handler: async (response) => {
         try {
           const verifyUrl = `${API_URL}/payment/verify`;
@@ -130,10 +126,10 @@ const OnGoingEvents = () => {
     const rzp1 = new window.Razorpay(options);
     rzp1.open();
   };
-  const handlePayment = async (fee) => {
+  const handlePayment = async () => {
     try {
       const orderUrl = `${API_URL}/payment/orders`;
-      const { data } = await axios.post(orderUrl, { amount: fee });
+      const { data } = await axios.post(orderUrl, { amount: 1 });
       console.log(data);
       await initPayment(data.data);
       return true;
@@ -160,36 +156,31 @@ const OnGoingEvents = () => {
       event_start_data: data.conferenceStartDate,
       event_end_data: data.conferenceEndDate,
       event_link: data.conferenceURL,
-      amount_paid: 0,
     };
-    if (localStorage.SRCUser) {
-      if (
-        (online === true && offline === false && international === false) ||
-        (online === false && offline === true && international === false) ||
-        (online === false && offline === false && international === true)
-      ) {
+    alert("A");
+    if (
+      (online === true && offline === false && international === false) ||
+      (online === false && offline === true && international === false) ||
+      (online === false && offline === false && international === true)
+    ) {
+      if (localStorage.SRCUser) {
         if (data.conferenceType === "free") {
-          dispatch(eventRegisteration(eventRegData));
+          // dispatch(eventRegisteration(eventRegData));
         } else {
-          var amount = 0;
-          if (online === true) amount = data.onlineprice;
-          if (offline === true) amount = data.offlineprice;
-          if (international === true) amount = data.internationalprice;
-          const pay = await handlePayment(parseInt(amount));
+          const pay = await handlePayment();
           if (pay === true) {
             eventRegData.paymentStatus = true;
-            eventRegData.amount = amount;
             dispatch(eventRegisteration(eventRegData));
           } else {
             alert("Cant register, please contact administrator");
           }
         }
       } else {
-        alert("Please select any one from online or offline or international");
+        alert("Please login to register for the event");
+        navigate("/login");
       }
     } else {
-      alert("Please login to register for the event");
-      navigate("/login");
+      alert("Please select only online or offline or international");
     }
   };
 

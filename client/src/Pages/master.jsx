@@ -16,6 +16,7 @@ import Profile from "./Profile";
 import Conference from "./conference";
 import SpeakerFeedback from "./speakerFeedback";
 import Brochure from "./brochure";
+import PdfReader from "../components/Events/pdfreader";
 
 const Master = () => {
   let { type } = useParams();
@@ -29,7 +30,7 @@ const Master = () => {
   return (
     <div>
       {type === "home" && <Home />}
-      {type === "brochure" && <Brochure />}
+      {type === "broucher" && <PdfReader />}
       {type === "events" && <Event />}
       {type === "cde" && <Event />}
       {type === "gallery" && <GalleryPage />}

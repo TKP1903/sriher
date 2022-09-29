@@ -40,12 +40,12 @@ Router.post("/orders", async (req, res) => {
     instance.orders.create(options, (error, order) => {
       if (error) {
         console.log(error);
-        return res.status(500).json({ message: "Something Went Wrong!" });
+        return res.status(500).json({ error: error.message });
       }
       res.status(200).json({ data: order });
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error!" });
+    res.status(500).json({ error: error.message });
     console.log(error);
   }
 });

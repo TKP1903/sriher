@@ -138,7 +138,9 @@ export const eventRegisteration = (eventRegData) => async (dispatch) => {
         }).then((response) => {
             return response;
         });
-        alert("Registration successfull");
+        if (event.status === 200) {
+          alert("Registration successfull");
+        }
         return dispatch({ type: REGISTER_EVENT, payload:  event.data});
     } catch (error) {
         if(error.response.status === 500) {

@@ -47,17 +47,18 @@ ACCESS      :   Public
 METHOD      :   POSt
 */
 Router.post("/add-event", async (req, res) => {
-    try {
-        const isAvailable = await EventModel.findOne(req.body.eventData);
-        if(isAvailable) {
-            throw Error("Event already exist");
-        }
-        const data = await req.body.eventData;
-        await EventModel.create(data);
-        res.status(200).json({message: "Event add successfully"});
-    } catch (error) {
-        res.status(500).json({error: error.message});
+  try {
+    console.log(req.body.eventData);
+    const isAvailable = await EventModel.findOne(req.body.eventData);
+    if (isAvailable) {
+      throw Error("Event already exist");
     }
+    const data = await req.body.eventData;
+    await EventModel.create(data);
+    res.status(200).json({ message: "Event add successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 /*
