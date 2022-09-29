@@ -179,6 +179,7 @@ const OnGoingEvents = () => {
           if (pay === true) {
             eventRegData.paymentStatus = true;
             eventRegData.amount = amount;
+            eventRegData.eventCostType = "Paid";
             dispatch(eventRegisteration(eventRegData));
           } else {
             alert("Cant register, please contact administrator");
