@@ -44,6 +44,7 @@ const AddEvent = () => {
         internationalprice: 0,
         eventType: "",
         conferenceURL: "",
+        broucherLink: "",
         scheduleConference: [
           {
             date: "",
@@ -525,6 +526,22 @@ const AddEvent = () => {
                   setEventData((prev) => ({
                     ...prev,
                     conferenceURL: e.target.value,
+                  }))
+                }
+              />
+            </div>
+            <div className="flex flex-row items-start justify-center gap-5 w-full">
+              <TextField
+                required
+                name="BroucherLink"
+                id="outlined-required"
+                label="Broucher Link"
+                fullWidth
+                // onChange={handleChange("conferenceURL")}
+                onChange={(e) =>
+                  setEventData((prev) => ({
+                    ...prev,
+                    broucherLink: e.target.value,
                   }))
                 }
               />

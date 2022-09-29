@@ -471,6 +471,23 @@ const UpdateEvent = () => {
               }
             />
           </div>
+          <div className="flex flex-row items-start justify-center gap-5 w-full">
+            <TextField
+              required
+              value={eventData?.broucherLink}
+              name="BroucherLink"
+              id="outlined-required"
+              helperText="Broucher Link"
+              fullWidth
+              // onChange={handleChange("conferenceURL")}
+              onChange={(e) =>
+                setEventData((prev) => ({
+                  ...prev,
+                  broucherLink: e.target.value,
+                }))
+              }
+            />
+          </div>
           {/* <div className="px-1 py-2 w-full border-t border-grey-900">
                     <div className="flex items-center justify-between w-full">
                         <h2 className="text-xl font-gray-200 font-bold py-4">Schedule Conference</h2>

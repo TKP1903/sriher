@@ -23,6 +23,7 @@ const EventsSchema = new mongoose.Schema({
   eventType: { type: String },
   conferenceURL: { type: String },
   organizerName: { type: String },
+  broucherLink: { type: String },
   scheduleConference: [
     {
       date: { type: Date },

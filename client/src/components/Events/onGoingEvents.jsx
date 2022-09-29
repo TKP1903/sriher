@@ -228,7 +228,13 @@ const OnGoingEvents = () => {
                         >
                           Download Broucher
                         </a> */}
-                        <Link to="/broucher">View Broucher</Link>
+                        <a
+                          href={`${data.broucherLink}`}
+                          target="_blank"
+                          className="text-lg font-light px-2 py-1 bg-red-600 font-bold text-gray-50 rounded-lg"
+                        >
+                          View brochure
+                        </a>
                       </div>
                       <div className="flex items-center md:items-start gap-3">
                         <h4 className="text-lg font-semibold w-1/4">
