@@ -17,6 +17,7 @@ const EventsRegisterSchema = new mongoose.Schema({
   event_end_data: { type: String },
   event_link: { type: String },
   amount: { type: String },
+  event_reg_type: { type: String },
 });
 
 

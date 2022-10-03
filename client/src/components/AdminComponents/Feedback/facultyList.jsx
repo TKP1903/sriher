@@ -119,7 +119,7 @@ const FacultyList = (props) => {
                   </TableRow>
                 ))
               ) : (
-                <>Lading...</>
+                <>Loading...</>
               )}
             </TableBody>
           </Table>

@@ -83,7 +83,7 @@ const SideBar = () => {
         name: "Successful Payments",
         color: "text-green-800",
         icon: <MdOutlinePayment className="w-6 h-6" />,
-        path: "feedback",
+        path: "payments",
       },
     ];
     return (

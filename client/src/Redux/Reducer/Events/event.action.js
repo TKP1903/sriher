@@ -144,7 +144,7 @@ export const eventRegisteration = (eventRegData) => async (dispatch) => {
         return dispatch({ type: REGISTER_EVENT, payload:  event.data});
     } catch (error) {
         if(error.response.status === 500) {
-          // alert(error.response.data.error);
+          alert(error.response.data.error);
           // window.location.href = "/events";
         }
         return dispatch({ type: "ERROR", payload: error });

@@ -47,7 +47,7 @@ const EventTable = () => {
             <TableRow>
               <TableCell className="tableCell">ID</TableCell>
               <TableCell className="tableCell">Event Name</TableCell>
-              <TableCell className="tableCell">Organized By</TableCell>
+              {/* <TableCell className="tableCell">Organized By</TableCell> */}
               <TableCell className="tableCell">Event Type</TableCell>
               <TableCell className="tableCell">Status</TableCell>
               <TableCell className="tableCell">Options</TableCell>
@@ -70,9 +70,9 @@ const EventTable = () => {
                       {row.eventName}
                     </div>
                   </TableCell>
-                  <TableCell className="tableCell">
+                  {/* <TableCell className="tableCell">
                     {row.organiser.join(" , ")}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="tableCell">{row.eventType}</TableCell>
                   <TableCell className="tableCell">
                     <span

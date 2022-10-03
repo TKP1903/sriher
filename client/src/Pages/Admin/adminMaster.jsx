@@ -12,6 +12,7 @@ import GalleryPage from "./gallery.page";
 import UserPage from "./user.page";
 import SliderPage from "./slider.page";
 import FeedbackPage from "./AFeedback/feedback.page";
+import PaymentsPage from "./payments/payments.page";
 
 const AdminMaster = () => {
   let { type } = useParams();
@@ -45,6 +46,7 @@ const AdminMaster = () => {
       {type === "addslider" && <SliderPage urltype={type} />}
       {type === "feedback" && <FeedbackPage urltype={type} />}
       {type === "add-faculty-feedback" && <FeedbackPage urltype={type} />}
+      {type === "payments" && <PaymentsPage />}
     </div>
   );
 };

@@ -34,7 +34,8 @@ const DataTable = () => {
     var idCount = 1;
     return (
       <>
-        <div style={{ height: 400, width: "100%" }}>
+        {/* <div style={{ height: 500, width: "100%" }}> */}
+        <Paper sx={{ width: "100%", overflow: "scroll" }}>
           <TableContainer component={Paper} className="table">
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -42,8 +43,8 @@ const DataTable = () => {
                   <TableCell className="tableCell">ID</TableCell>
                   <TableCell className="tableCell">User Name</TableCell>
                   <TableCell className="tableCell">Institution</TableCell>
-                  <TableCell className="tableCell">StateDentalCode</TableCell>
-                  <TableCell className="tableCell">State</TableCell>
+                  {/* <TableCell className="tableCell">StateDentalCode</TableCell> */}
+                  {/* <TableCell className="tableCell">State</TableCell> */}
                   <TableCell className="tableCell">PhoneNumber</TableCell>
                   <TableCell className="tableCell">User Type</TableCell>
                   <TableCell className="tableCell">Email</TableCell>
@@ -62,10 +63,10 @@ const DataTable = () => {
                       <TableCell className="tableCell">
                         {row.institution}
                       </TableCell>
-                      <TableCell className="tableCell">
+                      {/* <TableCell className="tableCell">
                         {row.stateDentalCode}
-                      </TableCell>
-                      <TableCell className="tableCell">{row.state}</TableCell>
+                      </TableCell> */}
+                      {/* <TableCell className="tableCell">{row.state}</TableCell> */}
                       <TableCell className="tableCell">
                         {row.phoneNumber}
                       </TableCell>
@@ -96,7 +97,8 @@ const DataTable = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
+        </Paper>
+        {/* </div> */}
       </>
     );
 }

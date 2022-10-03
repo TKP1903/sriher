@@ -17,19 +17,18 @@ const OnGoingEvents = () => {
   const [offline, setOffline] = useState(false);
   const [international, setInternational] = useState(false);
   const navigate = useNavigate();
+  const [paymentStatus, setPaymentStatus] = useState(false);
   const reduxState = useSelector((globalStore) => globalStore.event);
   const userState = useSelector((globalStore) => globalStore.user.user);
   useEffect(() => {
     reduxState?.events && setEventsData(reduxState.events?.events);
   }, [reduxState?.events]);
-  console.log({ online, offline, international });
 
   const dispatch = useDispatch();
   // const payNow = async ({ event_Data }) => {
   //   try {
   //     // const payments = dispatch(createPayment(200));
   //     const payments = await axios.get(`${API_URL}/payment/order`);
-  //     console.log(payments);
   //     const { data } = payments;
   //     const options = {
   //       key: "rzp_live_gN88e4C0ndRhfx", // Enter the Key ID generated from the Dashboard
@@ -42,14 +41,10 @@ const OnGoingEvents = () => {
   //       handler: async (response) => {
   //         try {
   //           alert("HANDLER");
-  //           console.log({ response });
   //           const paymentId = response.razorpay_payment_id;
-  //           console.log({ paymentId });
   //           const url = `${API_URL}/payment/capture/${paymentId}`;
   //           const captureResponse = await axios.post(url, {});
-  //           console.log(captureResponse.data);
   //         } catch (err) {
-  //           console.log(err);
   //         }
   //       },
   //       prefill: {
@@ -64,16 +59,11 @@ const OnGoingEvents = () => {
   //         color: "#3399cc",
   //       },
   //     };
-  //     console.log("PAYMENT  STARTING");
   //     const razorpay = new window.Razorpay(options);
-  //     console.log("PAYMENT  STARTED");
   //     razorpay.open();
-  //     console.log("PAYMENT  COMPLETED");
   //     // eventRegister({ event_Data });
   //     // e.preventDefault();
   //   } catch (error) {
-  //     console.log(error);
-  //     console.log(error.message);
   //     alert(error);
   //   }
   // };
@@ -99,7 +89,6 @@ const OnGoingEvents = () => {
     return rp;
   };
   const initPayment = async (data) => {
-    console.log(data);
     const rzkey = axios.get(`${API_URL}/payment/getRZPKEY`);
     const options = {
       key: rzkey,
@@ -116,33 +105,32 @@ const OnGoingEvents = () => {
       },
       handler: async (response) => {
         try {
-          const verifyUrl = `${API_URL}/payment/verify`;
+          const userID = userState?.user?._id;
+          const verifyUrl = `${API_URL}/payment/verify/${userID}`;
           const { data } = await axios.post(verifyUrl, response);
-          console.log(data);
-        } catch (error) {
-          console.log(error);
-        }
+          if (data) {
+            setPaymentStatus(true);
+          }
+        } catch (error) {}
       },
       theme: {
         color: "#3399cc",
       },
     };
     const rzp1 = new window.Razorpay(options);
-    rzp1.open();
+    const cpay = rzp1.open();
   };
   const handlePayment = async (fee) => {
     try {
+      console.log({ fee });
       const orderUrl = `${API_URL}/payment/orders`;
       const { data } = await axios.post(orderUrl, { amount: fee });
-      console.log(data);
+      const da = data.data;
       await initPayment(data.data);
-      return true;
     } catch (error) {
-      console.log(error);
       return false;
     }
   };
-  console.log(eventData);
   const eventRegister = async ({ data }) => {
     const eventRegData = {
       event_id: data._id,
@@ -161,32 +149,50 @@ const OnGoingEvents = () => {
       event_end_data: data.conferenceEndDate,
       event_link: data.conferenceURL,
       amount_paid: 0,
+      event_reg_type: "",
     };
+    var amount = 0;
+    if (online === true) {
+      amount = data.onlineprice;
+      eventRegData.event_reg_type = "Online";
+    }
+    if (offline === true) {
+      amount = data.offlineprice;
+      eventRegData.event_reg_type = "Offline";
+    }
+    if (international === true) {
+      amount = data.internationalprice;
+      eventRegData.event_reg_type = "International";
+    }
+    // await handlePayment(parseInt(amount), eventRegData, amount);
+
+    const userId = userState?.user?._id;
     if (localStorage.SRCUser) {
-      if (
-        (online === true && offline === false && international === false) ||
-        (online === false && offline === true && international === false) ||
-        (online === false && offline === false && international === true)
-      ) {
-        if (data.conferenceType === "free") {
-          dispatch(eventRegisteration(eventRegData));
-        } else {
-          var amount = 0;
-          if (online === true) amount = data.onlineprice;
-          if (offline === true) amount = data.offlineprice;
-          if (international === true) amount = data.internationalprice;
-          const pay = await handlePayment(parseInt(amount));
-          if (pay === true) {
-            eventRegData.paymentStatus = true;
-            eventRegData.amount = amount;
-            eventRegData.eventCostType = "Paid";
-            dispatch(eventRegisteration(eventRegData));
-          } else {
-            alert("Cant register, please contact administrator");
-          }
-        }
+      const checkuserEvents = await axios.get(
+        `${API_URL}/payment/checkUserEventReg/${userId}`
+      );
+      const checkUserEventsData = checkuserEvents?.data?.data;
+      // console.log(checkuserEvents?.data?.data[0].paymentStatus);
+
+      console.log(checkUserEventsData.length);
+      if (data.conferenceType === "free") {
+        dispatch(eventRegisteration(eventRegData));
       } else {
-        alert("Please select any one from online or offline or international");
+        if (checkuserEvents?.data?.data[0]?.paymentStatus === true) {
+          alert(
+            `You have already registered for the event ${checkuserEvents?.data?.data[0].eventName}`
+          );
+        } else if (checkuserEvents?.data?.data[0]?.paymentStatus === false) {
+          await handlePayment(parseInt(amount), eventRegData, amount);
+        } else {
+          eventRegData.paymentStatus = false;
+          eventRegData.amount = amount;
+          eventRegData.eventCostType = "Paid";
+          console.log({ data });
+          console.log({ amount });
+          dispatch(eventRegisteration(eventRegData));
+          new Promise.all(await handlePayment(parseInt(amount)));
+        }
       }
     } else {
       alert("Please login to register for the event");
@@ -311,14 +317,30 @@ const OnGoingEvents = () => {
                         </div>
                       </div>
                       <button
-                        className="bg-green-600 text-gray-50 text-xl font-bold w-full md:w-auto px-4 py-1 mt-2 rounded-lg"
+                        className="bg-green-600 hover:bg-blue-700 text-gray-50 text-lg font-bold w-full md:w-auto px-4 py-1 mt-2 rounded-lg"
                         onClick={() => {
-                          eventRegister({ data });
+                          if (
+                            (online === true &&
+                              offline === false &&
+                              international === false) ||
+                            (online === false &&
+                              offline === true &&
+                              international === false) ||
+                            (online === false &&
+                              offline === false &&
+                              international === true)
+                          ) {
+                            eventRegister({ data });
+                          } else {
+                            alert(
+                              "Please select any one from online or offline or international"
+                            );
+                          }
                           // payNow({ data });
                           // handlePayment
                         }}
                       >
-                        Register
+                        Pay to Register
                       </button>
                     </div>
                   </div>

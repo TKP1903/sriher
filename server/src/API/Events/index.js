@@ -132,33 +132,30 @@ DESCRIPTION :   Get all the registred event
 PARAMS      :   NO
 ACCESS      :   Public
 METHOD      :   GET
-*/Router.get("/get-faculty/:_id", async (req, res) => {
-    try {
-        const faculty = await FacultyModel.findById(req.params);
-        return res.json({ faculty });
-    } catch (error) {
-        return res.status(500).json({error: error.message});
-    }
-});
+*/
 Router.get("/getuserevents/:_id", async (req, res) => {
   try {
     const id = req.params._id;
     const checking_user_events = await EventRegisterModel.find({
       user_id: id,
     });
-    const userEvents = [];
+    var userEvents = []
     await Promise.all(
       checking_user_events.map(async (data) => {
         if (data.user_id === id) {
-          const event_data = await EventModel.findById(data.event_id);
-          userEvents.push({
-            ...data,
-            eventName: event_data?.eventName,
-            venue: event_data?.venues,
-            event_start_data: event_data?.conferenceStartDate,
-            event_end_data: event_data?.conferenceEndDate,
-            event_link: event_data?.conferenceURL,
-          });
+          userEvents.push(data);
+
+          // const event_data = await EventModel.findById(data.event_id);
+          // userEvents.push({
+          //   ...data,
+          //   eventName: event_data?.eventName,
+          //   venue: event_data?.venues,
+          //   event_start_data: event_data?.conferenceStartDate,
+          //   event_end_data: event_data?.conferenceEndDate,
+          //   event_link: event_data?.conferenceURL,
+          //   payment_Status: event_data?.paymentStatus,
+          //   amount: event_data?.amount
+          // });
         }
       })
     );

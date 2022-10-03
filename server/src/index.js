@@ -25,6 +25,7 @@ import PgStudents from "./API/PGStudents/index";
 import User from "./API/User/index";
 import Feedback from "./API/Feedback/index";
 import Payment from "./API/Payments/index";
+import sendMail from "./API/Email";
 
 const app = express();
 
@@ -71,8 +72,13 @@ app.use("/user", User);
 app.use("/feedback", Feedback);
 app.use("/payment", Payment);
 
-app.get("/", async (req, res) => {
-  res.status(200).json({ message: "Welcome" });
+app.get("/send", async (req, res) => {
+  try {
+    // await sendMail();
+    res.status(200).json({ message: "email sent successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.listen(4000, () =>

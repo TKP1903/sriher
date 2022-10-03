@@ -5,18 +5,20 @@ const crypto = require("crypto");
 
 //Database Modal
 import { EventModel } from "../../database/Events";
-import PaymentModel from "../../database/payments";
+import { EventRegisterModel } from "../../database/Events/eventRegister";
+import PaymentModel, { findByIdAndDelete } from "../../database/payments";
+import sendMail from "../Email";
 
 const Router = express.Router();
 
 // const instance = new Razorpay({
-//   key_id: "rzp_live_gN88e4C0ndRhfx",
-//   key_secret: "V0fx6SYgRDzVPpm1sGnP5jZl",
+//   key_id: "rzp_test_6cbtZxwHMpD5pu",
+//   key_secret: "3vFegrkBRknwobEJEZZj5vQs",
 // });
 //localhost:4000/payment/order
 http: Router.get("/getRZPKEY", async (req, res) => {
   try {
-    return res.status(200).json({ key: "rzp_live_gN88e4C0ndRhfx" });
+    return res.status(200).json({ key: "rzp_test_6cbtZxwHMpD5pu" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -25,10 +27,10 @@ http: Router.get("/getRZPKEY", async (req, res) => {
 Router.post("/orders", async (req, res) => {
   try {
     const instance = new Razorpay({
-      key_id: "rzp_live_gN88e4C0ndRhfx",
-      key_secret: "V0fx6SYgRDzVPpm1sGnP5jZl",
-      // 			key_id: "rzp_live_gN88e4C0ndRhfx",
-      //   key_secret: "V0fx6SYgRDzVPpm1sGnP5jZl",
+      key_id: "rzp_test_6cbtZxwHMpD5pu",
+      key_secret: "3vFegrkBRknwobEJEZZj5vQs",
+      // 			key_id: "rzp_test_6cbtZxwHMpD5pu",
+      //   key_secret: "3vFegrkBRknwobEJEZZj5vQs",
     });
 
     const options = {
@@ -50,23 +52,55 @@ Router.post("/orders", async (req, res) => {
   }
 });
 
-Router.post("/verify", async (req, res) => {
+Router.post("/verify/:userID", async (req, res) => {
   try {
+    const userID = req.params.userID;
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
     const data = req.body;
-    console.log({ razorpay_order_id, razorpay_payment_id, razorpay_signature });
+    // console.log({ razorpay_order_id, razorpay_payment_id, razorpay_signature });
+    console.log(userID);
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto
-      .createHmac("sha256", "V0fx6SYgRDzVPpm1sGnP5jZl")
+      .createHmac("sha256", "3vFegrkBRknwobEJEZZj5vQs")
       .update(sign.toString())
       .digest("hex");
 
     if (razorpay_signature === expectedSign) {
+      const event_id = await EventRegisterModel.find({
+        user_id: userID,
+      });
+      // console.log({ eventReg });
+
+      const eventReg = await EventRegisterModel.findOneAndUpdate(
+        { _id: event_id },
+        {
+          $set: {
+            paymentStatus: true,
+          },
+        }
+      );
+      console.log(eventReg);
+      const pay = await PaymentModel.create({
+        userId: userID,
+        amount: eventReg.amount,
+        date: Date.now(),
+        razorpay: {
+          orderId: razorpay_order_id,
+          paymentId: razorpay_payment_id,
+          signature: razorpay_signature,
+        },
+      });
+      await sendMail(event_id);
+      // console.log({ eventReg, pay });
       return res
         .status(200)
         .json({ message: "Payment verified successfully", data: data });
     } else {
+      const data = await EventRegisterModel.findOneAndDelete({
+        user_id: userID,
+      });
+      console.log({ data });
       return res.status(400).json({ message: "Invalid signature sent!" });
     }
   } catch (error) {
@@ -75,7 +109,34 @@ Router.post("/verify", async (req, res) => {
   }
 });
 
+Router.get("/checkUserEventReg/:_id", async (req, res) => {
+  try {
+    const data = await EventRegisterModel.find({
+      user_id: req.params._id,
+    });
+    return res.status(200).json({ data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 
+Router.get("/get-all-payments", async (req, res) => {
+  try {
+    const data = await PaymentModel.find({}).populate({ path: "userId" });
+    const payments = [];
+    data.map((item) => {
+      payments.push({
+        name: item.userId.fullName,
+        email: item.userId.email,
+        phone: item.userId.phoneNumber[0],
+        amount: item.amount,
+      });
+    });
+    return res.status(200).json({ payments });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 export default Router;
 
 

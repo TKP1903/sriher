@@ -28,6 +28,7 @@ const ConferenceList = () => {
   useEffect(() => {
     reduxState?.userEvents && setEvents(reduxState.userEvents.userEvents);
   }, [reduxState?.userEvents]);
+  console.log(events);
 
   let idCount = 1;
 
@@ -43,13 +44,15 @@ const ConferenceList = () => {
                 <TableCell className="tableCell">VENUE</TableCell>
                 <TableCell className="tableCell">START DATE</TableCell>
                 <TableCell className="tableCell">END DATE</TableCell>
+                <TableCell className="tableCell">Payment Status</TableCell>
+                <TableCell className="tableCell">Amount</TableCell>
                 <TableCell className="tableCell">Conference Link</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {events?.length > 0 ? (
                 events?.map((row) => (
-                  <TableRow key={row.eventName} className="hover:bg-gray-100">
+                  <TableRow key={row.event_id} className="hover:bg-gray-100">
                     <TableCell className="tableCell">{idCount++}</TableCell>
                     <TableCell className="tableCell">{row.eventName}</TableCell>
                     <TableCell className="tableCell">{row.venue}</TableCell>
@@ -59,6 +62,14 @@ const ConferenceList = () => {
                     <TableCell className="tableCell">
                       {row.event_end_data}
                     </TableCell>
+                    <TableCell className="tableCell">
+                      {row.paymentStatus === false ? (
+                        <span className="text-red-600 font-bold">Not Paid</span>
+                      ) : (
+                        <span className="text-green-600 font-bold">Paid</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="tableCell">{row.amount}</TableCell>
                     <TableCell className="tableCell">
                       <a href={`${row?.event_link}`}>{row.event_link}</a>
                     </TableCell>
