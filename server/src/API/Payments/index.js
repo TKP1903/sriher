@@ -12,13 +12,13 @@ import sendMail from "../Email";
 const Router = express.Router();
 
 // const instance = new Razorpay({
-//   key_id: "rzp_test_6cbtZxwHMpD5pu",
-//   key_secret: "3vFegrkBRknwobEJEZZj5vQs",
+//   key_id: "rzp_live_gN88e4C0ndRhfx",
+//   key_secret: "V0fx6SYgRDzVPpm1sGnP5jZl",
 // });
 //localhost:4000/payment/order
 http: Router.get("/getRZPKEY", async (req, res) => {
   try {
-    return res.status(200).json({ key: "rzp_test_6cbtZxwHMpD5pu" });
+    return res.status(200).json({ key: "rzp_live_gN88e4C0ndRhfx" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -27,10 +27,10 @@ http: Router.get("/getRZPKEY", async (req, res) => {
 Router.post("/orders", async (req, res) => {
   try {
     const instance = new Razorpay({
-      key_id: "rzp_test_6cbtZxwHMpD5pu",
-      key_secret: "3vFegrkBRknwobEJEZZj5vQs",
-      // 			key_id: "rzp_test_6cbtZxwHMpD5pu",
-      //   key_secret: "3vFegrkBRknwobEJEZZj5vQs",
+      key_id: "rzp_live_gN88e4C0ndRhfx",
+      key_secret: "V0fx6SYgRDzVPpm1sGnP5jZl",
+      // 			key_id: "rzp_live_gN88e4C0ndRhfx",
+      //   key_secret: "V0fx6SYgRDzVPpm1sGnP5jZl",
     });
 
     const options = {
@@ -62,7 +62,7 @@ Router.post("/verify/:userID", async (req, res) => {
     console.log(userID);
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto
-      .createHmac("sha256", "3vFegrkBRknwobEJEZZj5vQs")
+      .createHmac("sha256", "V0fx6SYgRDzVPpm1sGnP5jZl")
       .update(sign.toString())
       .digest("hex");
 

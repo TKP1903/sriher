@@ -13,9 +13,9 @@ const CompletedEvents = () => {
 
   return (
     <>
-      <h1 className="text-3xl font-bold mt-3 text-center p-2 w-full bg-gray-100">
+      {/* <h1 className="text-3xl font-bold mt-3 text-center p-2 w-full bg-gray-100">
         Completed Events
-      </h1>
+      </h1> */}
       <div className="flex flex-wrap mx-6 md:mx-32 items-center justify-between gap-8">
         {eventData?.length > 0 ? (
           eventData?.map(
