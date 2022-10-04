@@ -71,7 +71,13 @@ const ConferenceList = () => {
                     </TableCell>
                     <TableCell className="tableCell">{row.amount}</TableCell>
                     <TableCell className="tableCell">
-                      <a href={`${row?.event_link}`}>{row.event_link}</a>
+                      {row.paymentStatus === false ? (
+                        <span className="text-red-600 font-bold">
+                          complete your payment
+                        </span>
+                      ) : (
+                        <a href={`${row?.event_link}`}>{row.event_link}</a>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
