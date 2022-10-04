@@ -54,7 +54,8 @@ const AboutDep = () => {
             </div>
             <div className="w-full h-full lg:w-2/6 lg:h-1/6 px-4">
               <img
-                src="https://oralpath.sriher.com/resources/template/images/aboutoral.jpg"
+                src="https://opsriher.s3.ap-south-1.amazonaws.com/International+Clinico-Pathological.jpeg"
+                // "https://oralpath.sriher.com/resources/template/images/aboutoral.jpg"
                 alt="Loading ..."
                 className="w-full h-full"
               />

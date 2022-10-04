@@ -21,7 +21,10 @@ const FacultyCard = () => {
         </div>
         <div className="md:w-auto flex flex-wrap items-center justify-center gap-10">
           {faculty?.length > 0 ? (
-            faculty?.map((data) => <FacultyCarousal {...data} />)
+            faculty?.map(
+              (data) =>
+                data.status === "Active" && <FacultyCarousal {...data} />
+            )
           ) : (
             <>Loading .....</>
           )}
