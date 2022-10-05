@@ -18,7 +18,7 @@ const Footer = () => {
             <h4 className="text-xl texgt-gray-800 font-bold">Contact us</h4>
             <div className="text-md texgt-gray-300 font-light flex items-center gap-3">
               <MdLocationPin />
-              No1, Sriramachandra nagar, Porur
+              No. 1, Sriramachandra nagar, Porur
             </div>
             <div className="text-md texgt-gray-300 font-light flex items-center gap-3">
               <MdPhone />

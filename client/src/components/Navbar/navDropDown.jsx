@@ -112,7 +112,7 @@ export const EventsDropdownRender = (props) => {
         >
           <span className="mr-1" id="nav_items">
             {props.name === "Events" && (type === "events" || type === "cms")
-              ? type
+              ? type.charAt(0).toUpperCase() + type.substring(1)
               : props.name}
           </span>
           <svg

@@ -13,6 +13,22 @@ sgMail.setApiKey(
   "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"
 );
 
+const EmailOTP = async (msg) => {
+  try {
+    console.log({ msg });
+    sgMail.send(msg, (err, info) => {
+      if (err) {
+        throw new Error(err);
+      } else {
+        return true;
+      }
+    });
+    console.log("Email sent");
+  } catch (error) {
+    return error;
+  }
+  // console.log(mail.from + "\n" + mail.to + "\n" + mail.html);
+};
 const sendMail = async (data) => {
   try {
     const userData = data[0];
@@ -46,4 +62,4 @@ const sendMail = async (data) => {
   // console.log(mail.from + "\n" + mail.to + "\n" + mail.html);
 };
 
-module.exports = sendMail;
+module.exports = { sendMail, EmailOTP };

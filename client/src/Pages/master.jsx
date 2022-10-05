@@ -17,6 +17,7 @@ import Conference from "./conference";
 import SpeakerFeedback from "./speakerFeedback";
 import Brochure from "./brochure";
 import PdfReader from "../components/Events/pdfreader";
+import ForgotPassword from "./forgotpassword";
 
 const Master = () => {
   let { type } = useParams();
@@ -43,6 +44,7 @@ const Master = () => {
       {type === "projects" && <Projects />}
       {type === "login" && <LoginPage />}
       {type === "register" && <RegisterPage />}
+      {type === "forgotpassword" && <ForgotPassword />}
 
       {localStorage.SRCUser ? (
         type === "profile" && <Profile urlType={"profile"} />
