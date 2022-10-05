@@ -20,6 +20,11 @@ const ForgotPassword = () => {
     hide: true,
     message: "",
   });
+  const [successMsg, setSuccessMsg] = useState({
+    show: false,
+    hide: true,
+    message: "",
+  });
   const verifyEmailAndSendOtp = async () => {
     try {
       const verifyEmail = await axios.get(
@@ -30,6 +35,13 @@ const ForgotPassword = () => {
         hide: true,
         message: "",
       });
+
+      setSuccessMsg({
+        show: true,
+        hide: false,
+        message: "OTP sent Successfully",
+      });
+
       if (verifyEmail?.status === 200) {
         setOtpScreen(true);
       }
@@ -114,6 +126,13 @@ const ForgotPassword = () => {
       }
     }
   };
+  const closeSuccess = () => {
+    setSuccessMsg({
+      show: false,
+      hide: true,
+      message: "",
+    });
+  };
   const closeError = () => {
     setErrorMsg({
       show: false,
@@ -134,6 +153,14 @@ const ForgotPassword = () => {
               </button>
             </div>
           )}
+          {successMsg?.show && (
+            <div className="flex w-1/3 items-center justify-between bg-green-500 p-2 text-gray-50 font-semibold">
+              {successMsg.message}
+              <button onClick={closeSuccess}>
+                <AiOutlineClose />
+              </button>
+            </div>
+          )}
           {otpScreen === true ? (
             <div className="w-full flex flex-col items-center gap-5">
               <p className="w-1/3 text-center text-gray-600 text-md font-light">
@@ -146,15 +173,23 @@ const ForgotPassword = () => {
                   onChange={(e) => setOTP(e.target.value)}
                 />
                 <button
-                  onClick={() => {
-                    // setOtpScreen(false);
+                  onClick={(e) => {
+                    e.preventDefault();
                     verifyOTP();
-                    // setChangePasswordScreen(true);
                   }}
                   className="bg-teal-700 px-3 py-2 w-64 text-gray-50 rounded-md"
                 >
                   Submit
                 </button>
+                <span className="text-sm font-semi-bold font-gray-400">
+                  Don't receive OTP ?{" "}
+                  <span
+                    className="border-b border-gray-400 cursor-pointer"
+                    onClick={verifyEmailAndSendOtp}
+                  >
+                    RESEND OTP
+                  </span>
+                </span>
               </div>
             </div>
           ) : changePasswordScreen === true ? (
