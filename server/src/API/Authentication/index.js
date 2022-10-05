@@ -139,8 +139,7 @@ Router.get("/verify-email/:email", async (req, res) => {
       subject: "Oralpath",
       html: `<strong>
         </strong><br />
-        <strong>Your otp   ${otp}</strong><br />
-        <p>Thank you </p>
+        <strong>Your OTP to reset the password for SRIHER Oralpath department website is ${otp}</strong><br />
         `,
     };
     await EmailOTP(msg);
