@@ -51,6 +51,11 @@ const ForgotPassword = () => {
         hide: false,
         message: error?.response.data.error,
       });
+      setSuccessMsg({
+        show: false,
+        hide: true,
+        message: "OTP sent Successfully",
+      });
     }
   };
   const verifyOTP = async () => {
@@ -64,6 +69,11 @@ const ForgotPassword = () => {
         },
       });
       if (checkOTP?.status === 200) {
+        setErrorMsg({
+          show: false,
+          hide: true,
+          message: "",
+        });
         setOtpScreen(false);
         setChangePasswordScreen(true);
       }
@@ -72,6 +82,11 @@ const ForgotPassword = () => {
         show: true,
         hide: false,
         message: error?.response.data.error,
+      });
+      setSuccessMsg({
+        show: false,
+        hide: true,
+        message: "OTP sent Successfully",
       });
     }
   };
@@ -88,6 +103,11 @@ const ForgotPassword = () => {
         hide: false,
         message: "Confirm Your Password",
       });
+      setSuccessMsg({
+        show: false,
+        hide: true,
+        message: "OTP sent Successfully",
+      });
     }
     if (!(password === confirmPassword)) {
       err = 1;
@@ -95,6 +115,11 @@ const ForgotPassword = () => {
         show: true,
         hide: false,
         message: "Password did not match",
+      });
+      setSuccessMsg({
+        show: false,
+        hide: true,
+        message: "OTP sent Successfully",
       });
     }
 
@@ -144,26 +169,28 @@ const ForgotPassword = () => {
     <div>
       <NavBar />
       <div className="relative top-10 lg:top-20 py-10">
-        <div className="w-full pt-44 flex flex-col items-center justify-center">
-          {errorMsg?.show && (
-            <div className="flex w-1/3 items-center justify-between bg-red-500 p-2 text-white font-light">
-              {errorMsg.message}
-              <button onClick={closeError}>
-                <AiOutlineClose />
-              </button>
-            </div>
-          )}
-          {successMsg?.show && (
-            <div className="flex w-1/3 items-center justify-between bg-green-500 p-2 text-gray-50 font-semibold">
-              {successMsg.message}
-              <button onClick={closeSuccess}>
-                <AiOutlineClose />
-              </button>
-            </div>
-          )}
+        <div className="w-full lg:pt-44 flex flex-col items-center justify-center">
+          <div className="w-full lg:flex lg:items-center lg:justify-center pb-2">
+            {errorMsg?.show && (
+              <div className="flex w-full lg:w-1/3 items-center justify-between bg-red-500 p-2 text-white font-light">
+                {errorMsg.message}
+                <button onClick={closeError}>
+                  <AiOutlineClose />
+                </button>
+              </div>
+            )}
+            {successMsg?.show && (
+              <div className="flex w-full lg:w-1/3 items-center justify-between bg-green-500 p-2 text-gray-50 font-semibold">
+                {successMsg.message}
+                <button onClick={closeSuccess}>
+                  <AiOutlineClose />
+                </button>
+              </div>
+            )}
+          </div>
           {otpScreen === true ? (
-            <div className="w-full flex flex-col items-center gap-5">
-              <p className="w-1/3 text-center text-gray-600 text-md font-light">
+            <div className="w-full flex flex-col items-center gap-5 pt-20 lg:pt-0">
+              <p className="w-full px-4 md:px-0 md:w-1/3  text-center text-gray-600 text-md font-light">
                 Please Enter Your OTP
               </p>
               <div className="flex flex-col items-center gap-5">
@@ -194,7 +221,7 @@ const ForgotPassword = () => {
             </div>
           ) : changePasswordScreen === true ? (
             <div className="w-full flex flex-col items-center gap-5">
-              <p className="w-1/3 text-center text-gray-600 text-md font-light">
+              <p className="w-full px-4 md:px-0 md:w-1/3  text-center text-gray-600 text-md font-light">
                 Reset Your password
               </p>
               <div className="flex flex-col items-center gap-5">
@@ -222,7 +249,7 @@ const ForgotPassword = () => {
             </div>
           ) : (
             <div className="w-full flex flex-col items-center gap-5">
-              <p className="w-1/3 text-center text-gray-600 text-md font-light">
+              <p className="w-full px-4 md:px-0 md:w-1/3 text-center text-gray-600 text-md font-light">
                 To reset your password, enter your email below and submit. An
                 email will be sent to you with an OTP.
               </p>
