@@ -3,7 +3,6 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 const SmConferenceList = ({events}) => {
-    console.log(events);
     var idCount = 1;
   return (
     <div>

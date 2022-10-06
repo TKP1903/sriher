@@ -13,6 +13,7 @@ import {
 
 const OnGoingEvents = () => {
   const [eventData, setEventsData] = useState([]);
+  const [eventNameForPay, setEventNameForPay] = useState("evet_name");
   const [online, setOnline] = useState(false);
   const [offline, setOffline] = useState(false);
   const [international, setInternational] = useState(false);
@@ -25,77 +26,16 @@ const OnGoingEvents = () => {
   }, [reduxState?.events]);
 
   const dispatch = useDispatch();
-  // const payNow = async ({ event_Data }) => {
-  //   try {
-  //     // const payments = dispatch(createPayment(200));
-  //     const payments = await axios.get(`${API_URL}/payment/order`);
-  //     const { data } = payments;
-  //     const options = {
-  //       key: "rzp_live_gN88e4C0ndRhfx", // Enter the Key ID generated from the Dashboard
-  //       // amount: "", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-  //       currency: "INR",
-  //       name: "oralpath",
-  //       description: "Event Payment",
-  //       image: "https://example.com/your_logo",
-  //       order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-  //       handler: async (response) => {
-  //         try {
-  //           alert("HANDLER");
-  //           const paymentId = response.razorpay_payment_id;
-  //           const url = `${API_URL}/payment/capture/${paymentId}`;
-  //           const captureResponse = await axios.post(url, {});
-  //         } catch (err) {
-  //         }
-  //       },
-  //       prefill: {
-  //         name: "Gaurav Kumar",
-  //         email: "gaurav.kumar@example.com",
-  //         contact: "9090909090",
-  //       },
-  //       notes: {
-  //         address: "Razorpay Corporate Office",
-  //       },
-  //       theme: {
-  //         color: "#3399cc",
-  //       },
-  //     };
-  //     const razorpay = new window.Razorpay(options);
-  //     razorpay.open();
-  //     // eventRegister({ event_Data });
-  //     // e.preventDefault();
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
-  const launchRazorpyay = async () => {
-    let options = {
-      key: "rzp_test_f7AzNO9BLJVfUI",
-      amount: 500 * 100,
-      currency: "INR",
-      name: "Sri Ramachandra",
-      description: "Payment for the event registration",
-      image: "https://oralpath.sriher.com/resources/assets/images/fav.png",
-      handler: () => {
-        alert("payment Completed");
-      },
-      prefill: {
-        name: userState.user?.fullName,
-        email: userState.user?.email,
-      },
-      theme: { color: "#c4242d" },
-    };
-    let razorPay = new window.Razorpay(options);
-    const rp = razorPay.open();
-    return rp;
-  };
+  const current_year = new Date();
   const initPayment = async (data) => {
     const rzkey = axios.get(`${API_URL}/payment/getRZPKEY`);
+    let des_name = eventNameForPay + "-" + current_year.getFullYear();
     const options = {
       key: rzkey,
       amount: data.amount,
       currency: "INR",
       name: "ORALPATH",
-      // description: "Payment for the event registration",
+      description: des_name,
       image: "https://oralpath.sriher.com/resources/assets/images/fav.png",
       order_id: data.id,
       // callback_url: `${API_URL}/payment/verify`,
@@ -122,7 +62,6 @@ const OnGoingEvents = () => {
   };
   const handlePayment = async (fee) => {
     try {
-      console.log({ fee });
       const orderUrl = `${API_URL}/payment/orders`;
       const { data } = await axios.post(orderUrl, { amount: fee });
       const da = data.data;
@@ -151,6 +90,8 @@ const OnGoingEvents = () => {
       amount_paid: 0,
       event_reg_type: "",
     };
+    setEventNameForPay(data.eventName);
+
     var amount = 0;
     if (online === true) {
       amount = data.onlineprice;
@@ -164,7 +105,6 @@ const OnGoingEvents = () => {
       amount = data.internationalprice;
       eventRegData.event_reg_type = "International";
     }
-    // await handlePayment(parseInt(amount), eventRegData, amount);
 
     const userId = userState?.user?._id;
     if (localStorage.SRCUser) {
@@ -172,9 +112,7 @@ const OnGoingEvents = () => {
         `${API_URL}/payment/checkUserEventReg/${userId}`
       );
       const checkUserEventsData = checkuserEvents?.data?.data;
-      // console.log(checkuserEvents?.data?.data[0].paymentStatus);
 
-      console.log(checkUserEventsData.length);
       if (data.conferenceType === "free") {
         dispatch(eventRegisteration(eventRegData));
       } else {
@@ -188,8 +126,6 @@ const OnGoingEvents = () => {
           eventRegData.paymentStatus = false;
           eventRegData.amount = amount;
           eventRegData.eventCostType = "Paid";
-          console.log({ data });
-          console.log({ amount });
           dispatch(eventRegisteration(eventRegData));
           new Promise.all(await handlePayment(parseInt(amount)));
         }

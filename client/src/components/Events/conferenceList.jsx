@@ -15,20 +15,13 @@ import { getUserEvent } from "../../Redux/Reducer/Events/event.action";
 
 const ConferenceList = () => {
   const [events, setEvents] = useState([]);
-
   const dispatch = useDispatch();
 
   const reduxState = useSelector((globalStore) => globalStore.event);
-  //   const userState = useSelector((globalStore) => globalStore.user.user);
-  //   const user_id = userState?.user?._id;
-  //   useEffect(() => {
-  //     dispatch(getUserEvent(user_id));
-  //   }, []);
 
   useEffect(() => {
     reduxState?.userEvents && setEvents(reduxState.userEvents.userEvents);
   }, [reduxState?.userEvents]);
-  console.log(events);
 
   let idCount = 1;
 

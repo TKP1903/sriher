@@ -106,4 +106,25 @@ Router.delete("/delete/:_id", async (req, res) => {
       res.status(500).json({error: error.message});
   }
 });
+
+
+
+/*
+ROUTE       :   /search-user
+DESCRIPTION :   search users from db using email
+PARAMS      :   _id
+ACCESS      :   Public
+METHOD      :   GET
+*/
+Router.get("/search-user/:key", async (req, res) => {
+  try {        
+    const key = req.params.key;
+    const data = await UserModel.find({
+      email: {$regex: key, $options: "i"}
+      });
+      res.status(200).json({data});
+  } catch (error) {
+      res.status(500).json({error: error.message});
+  }
+});
 export default Router;

@@ -11,50 +11,76 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 //Redux action
 import { getAllUsers, deleteUser } from '../../Redux/Reducer/User/user.action';
+import axios from "axios";
+import { API_URL } from "../../key";
 
-const DataTable = () => {
-    const [rows, setRows] = useState([]);
-    const reduxState = useSelector((globalStore) => globalStore.user.allUsers);
+const DataTable = ({ searchKey }) => {
+  const [rows, setRows] = useState([]);
+  const reduxState = useSelector((globalStore) => globalStore.user.allUsers);
 
-    useEffect(() => {
-      reduxState?.user && setRows(reduxState.user);
-    }, [reduxState]);
+  useEffect(() => {
+    reduxState?.user && setRows(reduxState.user);
+  }, [reduxState]);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-      dispatch(getAllUsers());
-    }, []);
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
 
-    const deleteItem = (_id) => {
-      const de = dispatch(deleteUser(_id));
-      console.log(de);
-    };
+  const deleteItem = (_id) => {
+    const de = dispatch(deleteUser(_id));
+    console.log(de);
+  };
+  const searchUser = async () => {
+    let searchResult = await axios.get(
+      `${API_URL}/user/search-user/${searchKey}`
+    );
+    console.log(searchResult);
+    if (searchResult) setRows(searchResult.data.data);
+  };
 
-    var idCount = 1;
-    return (
-      <>
-        {/* <div style={{ height: 500, width: "100%" }}> */}
-        <Paper sx={{ width: "100%", overflow: "scroll" }}>
-          <TableContainer component={Paper} className="table">
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell className="tableCell">ID</TableCell>
-                  <TableCell className="tableCell">User Name</TableCell>
-                  <TableCell className="tableCell">Institution</TableCell>
-                  {/* <TableCell className="tableCell">StateDentalCode</TableCell> */}
-                  {/* <TableCell className="tableCell">State</TableCell> */}
-                  <TableCell className="tableCell">PhoneNumber</TableCell>
-                  <TableCell className="tableCell">User Type</TableCell>
-                  <TableCell className="tableCell">Email</TableCell>
-                  <TableCell className="tableCell">Options</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {}
-                {rows?.length > 0 ? (
-                  rows?.map((row) => (
+  // if (searchKey) {
+  //   console.log("A");
+  //   searchUser();
+  // } else {
+  //   console.log("B");
+  //   // reduxState?.user && setRows(reduxState.user);
+  //   // dispatch(getAllUsers());
+  // }
+
+  var idCount = 1;
+  return (
+    <>
+      {/* <div style={{ height: 500, width: "100%" }}> */}
+      <Paper sx={{ width: "100%", overflow: "scroll" }}>
+        <TableContainer component={Paper} className="table">
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell className="tableCell">ID</TableCell>
+                <TableCell className="tableCell">User Name</TableCell>
+                <TableCell className="tableCell">Institution</TableCell>
+                {/* <TableCell className="tableCell">StateDentalCode</TableCell> */}
+                {/* <TableCell className="tableCell">State</TableCell> */}
+                <TableCell className="tableCell">PhoneNumber</TableCell>
+                <TableCell className="tableCell">User Type</TableCell>
+                <TableCell className="tableCell">Email</TableCell>
+                <TableCell className="tableCell">Options</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows?.length > 0 ? (
+                rows
+                  .filter((val) => {
+                    if (searchKey === "") return val;
+                    else if (
+                      val.email.includes(searchKey) ||
+                      val.fullName.includes(searchKey)
+                    )
+                      return val;
+                  })
+                  .map((row) => (
                     <TableRow key={row._id} className="hover:bg-gray-100">
                       <TableCell className="tableCell">{idCount++}</TableCell>
                       <TableCell className="tableCell">
@@ -91,16 +117,16 @@ const DataTable = () => {
                       </TableCell>
                     </TableRow>
                   ))
-                ) : (
-                  <></>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-        {/* </div> */}
-      </>
-    );
-}
+              ) : (
+                <></>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+      {/* </div> */}
+    </>
+  );
+};
 
 export default DataTable;

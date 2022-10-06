@@ -7,8 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { API_URL } from "../../../key";
 import axios from "axios";
+import { CSVLink } from "react-csv";
+import { MdFileDownload } from "react-icons/md";
+
+import { API_URL } from "../../../key";
 
 const columns = [
   //   { id: "id", label: "ID", minWidth: 170 },
@@ -60,59 +63,80 @@ export default function PaymentsTable() {
       createData(item.name, item.email, item.phone, item.amount);
     }),
   ];
-  console.log(paymentsData);
-  console.log({ rows });
+  const csvData = paymentsData;
 
   return (
-    <Paper sx={{ width: "100%", overflow: "scroll" }}>
-      <TableContainer sx={{ maxHeight: 600 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {paymentsData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, i) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <>
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        </>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <div className="flex flex-col items-end justify-center shadow-lg">
+      {paymentsData?.length > 0 ? (
+        <div className="flex items-center gap-2 border border-gray-50 bg-green-700 text-gray-50 text-xl font-semibold p-2 rounded-md shadow-md mb-2">
+          <CSVLink data={csvData} filename={"events.csv"}>
+            Download
+          </CSVLink>
+          <MdFileDownload className="w-6 h-6" />
+        </div>
+      ) : (
+        <span>
+          <div className="flex items-center gap-2 border border-gray-50 bg-red-700 text-gray-50 text-xl font-semibold p-2 rounded-md shadow-md mb-2">
+            No Data To Download
+            <MdFileDownload className="w-6 h-6" />
+          </div>
+        </span>
+      )}
+      <Paper sx={{ width: "100%", overflow: "scroll" }}>
+        <TableContainer sx={{ maxHeight: 600 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paymentsData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, i) => {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.code}
+                    >
+                      {columns.map((column) => {
+                        const value = row[column.id];
+                        return (
+                          <>
+                            <TableCell key={column.id} align={column.align}>
+                              {column.format && typeof value === "number"
+                                ? column.format(value)
+                                : value}
+                            </TableCell>
+                          </>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </div>
   );
 }

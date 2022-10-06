@@ -6,16 +6,16 @@ import { FaUserTie } from "react-icons/fa";
 
 //Components
 import SideBar from "../../components/AdminComponents/siderbar";
-import AdminNavBar from "../../components/AdminComponents/adminNavBar";
 import Card from "../../components/AdminComponents/card";
 import DataTable from "../../components/AdminComponents/dataTable";
-
+import AdminSearchNavBar from "../../components/AdminComponents/adminSearchNavBar";
 //Redux actions
 import { getAllUsers } from "../../Redux/Reducer/User/user.action";
 import AddUser from "../../components/AdminComponents/addUser";
 
 const UserPage = (props) => {
   const [users, setUsers] = useState([]);
+  const [searchKey, setSearchKey] = useState([]);
 
   const reduxState = useSelector((globalState) => globalState.user);
   useEffect(() => {
@@ -31,7 +31,6 @@ const UserPage = (props) => {
       icon: <FaUserTie />,
     },
   ];
-
   return (
     <>
       <div className="flex flex-row w-full">
@@ -39,7 +38,7 @@ const UserPage = (props) => {
           <SideBar />
         </div>
         <div className="w-4/5 flex flex-col gap-5">
-          <AdminNavBar />
+          <AdminSearchNavBar setSearchKey={setSearchKey} />
           <div className="flex flex-col gap-10 mt-5">
             <div className="flex flex-row items-end justify-between mx-10">
               <div className="flex flex-row items-start">
@@ -55,7 +54,7 @@ const UserPage = (props) => {
               </Link>
             </div>
             <div className="mx-10">
-              {props.urltype === "users" && <DataTable />}
+              {props.urltype === "users" && <DataTable searchKey={searchKey} />}
               {props.urltype === "adduser" && <AddUser />}
             </div>
           </div>

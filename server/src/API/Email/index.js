@@ -31,8 +31,9 @@ const EmailOTP = async (msg) => {
 };
 const sendMail = async (data) => {
   try {
-    const userData = data[0];
-    console.log(data);
+    const userData = data;
+    console.log({ userData });
+    console.log(userData.user_email);
     const msg = {
       from: "oralpath@sriramachandra.edu.in",
       to: userData.user_email,
@@ -48,13 +49,13 @@ const sendMail = async (data) => {
       `,
     };
     console.log({ msg });
-    sgMail.send(msg, (err, info) => {
-      if (err) {
-        throw new Error(err);
-      } else {
-        return true;
-      }
-    });
+    // sgMail.send(msg, (err, info) => {
+    //   if (err) {
+    //     throw new Error(err);
+    //   } else {
+    //     return true;
+    //   }
+    // });
     console.log("Email sent");
   } catch (error) {
     return error;

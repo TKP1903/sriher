@@ -16,7 +16,6 @@ import Profile from "./Profile";
 import Conference from "./conference";
 import SpeakerFeedback from "./speakerFeedback";
 import Brochure from "./brochure";
-import PdfReader from "../components/Events/pdfreader";
 import ForgotPassword from "./forgotpassword";
 
 const Master = () => {
@@ -31,7 +30,7 @@ const Master = () => {
   return (
     <div>
       {type === "home" && <Home />}
-      {type === "broucher" && <PdfReader />}
+      {/* {type === "broucher" && <PdfReader />} */}
       {type === "events" && <Event />}
       {type === "cde" && <Event />}
       {type === "gallery" && <GalleryPage />}
