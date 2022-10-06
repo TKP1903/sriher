@@ -95,7 +95,7 @@ const SideBar = () => {
             </Link>
           </div>
           <hr />
-          <div className="h-screen overflow-y-auto">
+          <div className="h-screen overflow-y-auto pb-20">
             <ul className="text-lg  text-gray-600 flex flex-col items-start w-full pt-2">
               {siderbarList.map((data) => (
                 <li className="pl-6 py-3.5 w-full border-b border-gray-300 hover:bg-gray-100">

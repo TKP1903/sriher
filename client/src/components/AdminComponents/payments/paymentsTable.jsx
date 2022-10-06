@@ -29,6 +29,7 @@ const columns = [
     minWidth: 170,
     align: "center",
   },
+  { id: "paymentId", label: "PaymentId", minWidth: 100 },
 ];
 
 export default function PaymentsTable() {
@@ -64,15 +65,26 @@ export default function PaymentsTable() {
     }),
   ];
   const csvData = paymentsData;
-
+  let totalAmount = 0;
+  paymentsData.map((item) => {
+    totalAmount += item.amount;
+  });
   return (
     <div className="flex flex-col items-end justify-center shadow-lg">
       {paymentsData?.length > 0 ? (
-        <div className="flex items-center gap-2 border border-gray-50 bg-green-700 text-gray-50 text-xl font-semibold p-2 rounded-md shadow-md mb-2">
-          <CSVLink data={csvData} filename={"events.csv"}>
-            Download
-          </CSVLink>
-          <MdFileDownload className="w-6 h-6" />
+        <div className="flex items-center justify-between w-full">
+          <div className="flex flex-row items-start gap-4 bg-white border-2 border-gray-300 px-4 py-1 rounded-md shadow-xl">
+            <h4 className="text-xl font-semibold text-gray-600">
+              Toal Amount:
+            </h4>
+            <h2 className="text-2xl font-bold text-gray-800">{totalAmount}</h2>
+          </div>
+          <div className="flex items-center gap-2 border border-gray-50 bg-green-700 text-gray-50 text-xl font-semibold p-2 rounded-md shadow-md mb-2">
+            <CSVLink data={csvData} filename={"payments.csv"}>
+              Download
+            </CSVLink>
+            <MdFileDownload className="w-6 h-6" />
+          </div>
         </div>
       ) : (
         <span>
