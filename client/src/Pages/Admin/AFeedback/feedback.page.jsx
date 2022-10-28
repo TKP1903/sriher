@@ -15,24 +15,23 @@ import FacultyList from '../../../components/AdminComponents/Feedback/facultyLis
 import AddFeedbackFaculty from '../../../components/AdminComponents/Feedback/addFeedbackFaculty';
 
 const FeedbackPage = (props) => {
-  const cardData = [
-    {
-      name: "Brochure",
-      count: 0,
-      icon: <FaUserFriends />,
-    }
-  ]
-  
-  const reduxState = useSelector((globalStore) => globalStore.faculty)
+  // const cardData = [
+  //   {
+  //     name: "Brochure",
+  //     count: 0,
+  //     icon: <FaUserFriends />,
+  //   }
+  // ]
+
+  const reduxState = useSelector((globalStore) => globalStore.faculty);
   const dispatch = useDispatch();
   useEffect(() => {
-   dispatch(getFaculty());
- }, [])
-    
+    dispatch(getFaculty());
+  }, []);
+
   useEffect(() => {
     //reduxState?.faculty && setFacultyData(reduxState?.faculty.data);
   }, [reduxState?.faculty]);
-  
 
   return (
     <>

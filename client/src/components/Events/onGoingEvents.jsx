@@ -5,10 +5,12 @@ import MoonLoader from "react-spinners/MoonLoader"
 import { API_URL } from "../../key";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
 //Redux action
 import {
   eventRegisteration,
   createPayment,
+  getUserEvent,
 } from "../../Redux/Reducer/Events/event.action";
 
 const OnGoingEvents = () => {
@@ -17,12 +19,22 @@ const OnGoingEvents = () => {
   const [online, setOnline] = useState(false);
   const [offline, setOffline] = useState(false);
   const [international, setInternational] = useState(false);
-  const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
   const [paymentStatus, setPaymentStatus] = useState(false);
+  const [successMsg, setSuccessMsg] = useState({
+    show: false,
+    hide: true,
+    message: "Hi",
+  });
+
+  const navigate = useNavigate();
+
   const reduxState = useSelector((globalStore) => globalStore.event);
   const userState = useSelector((globalStore) => globalStore.user.user);
+
   useEffect(() => {
     reduxState?.events && setEventsData(reduxState.events?.events);
+    reduxState?.userEvents && setEvents(reduxState.userEvents.userEvents);
   }, [reduxState?.events]);
 
   const dispatch = useDispatch();
@@ -127,7 +139,7 @@ const OnGoingEvents = () => {
           eventRegData.amount = amount;
           eventRegData.eventCostType = "Paid";
           dispatch(eventRegisteration(eventRegData));
-          new Promise.all(await handlePayment(parseInt(amount)));
+          await handlePayment(parseInt(amount));
         }
       }
     } else {
@@ -135,19 +147,59 @@ const OnGoingEvents = () => {
       navigate("/login");
     }
   };
+  const createAlertMsg = async () => {
+    const eventName = eventData[0]?.eventName;
+    events?.map((data) => {
+      if (data.paymentStatus === false) {
+        if (data.eventName === eventName) {
+          setSuccessMsg({
+            show: true,
+            hide: false,
+            message: `Dear ${userState?.user?.fullName} please complete your payment for ${eventName} `,
+          });
+        }
+      }
+    });
+  };
+  useEffect(() => {
+    const user_id = localStorage.getItem("user_id");
+    dispatch(getUserEvent(user_id));
+    reduxState?.userEvents && setEvents(reduxState.userEvents.userEvents);
+    createAlertMsg();
+  }, []);
+  const closeSuccess = () => {
+    setSuccessMsg({
+      show: false,
+      hide: true,
+      message: "",
+    });
+  };
 
   return (
     <>
       <h1 className="text-xl md:text-3xl font-bold mt-3 text-center p-2 w-full bg-gray-100 lg:mx-44">
         OnGoing Events
       </h1>
+      <div className="w-full lg:flex lg:items-center lg:justify-center pb-2">
+        {successMsg?.show && (
+          <div className="flex w-full lg:w-2/3 items-center justify-between bg-green-500 p-2 text-gray-50 font-semibold">
+            {successMsg.message}
+            <button onClick={closeSuccess}>
+              <AiOutlineClose className="w-6 h-6" />
+            </button>
+          </div>
+        )}
+      </div>
       <div className="flex flex-col items-center justify-center gap-10">
         {eventData?.length > 0 ? (
           eventData?.map(
             (data) =>
               data.status === "active" &&
               data.eventType === "conference" && (
-                <div className="flex flex-col items-center justify-center gap-5 lg:gap-2 px-5 lg:px-10 bg-gray-100 lg:w-3/4 py-5 rounded-md shadow-2xl border">
+                <div
+                  key={data.eventName}
+                  className="flex flex-col items-center justify-center gap-5 lg:gap-2 px-5 lg:px-10 bg-gray-100 lg:w-3/4 py-5 rounded-md shadow-2xl border"
+                >
                   <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="w-full md:w-64 h-52 lg:w-2/3 lg:h-72">
                       <img

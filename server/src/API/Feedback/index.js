@@ -2,7 +2,7 @@ import express from "express";
 
 //Models
 import { FeedbackModel } from "../../database/Feedback/index";
-import { FacultyFeedbackModel } from "../../database/Feedback/facultyFeedback";
+import { EventsFeedbackModel } from "../../database/Feedback/eventsFeedback";
 
 
 const Router = express.Router();
@@ -53,7 +53,7 @@ METHOD      :   GET
 */
 Router.get("/getfacultyfeedbackdata", async (req, res) => {
     try {        
-        const feedbackData = await FacultyFeedbackModel.find({});
+        const feedbackData = await EventsFeedbackModel.find({});
         const feedback = await FeedbackModel.find({});
         return res.status(200).json({ feedbackData, feedback });
     } catch (error) {
@@ -68,12 +68,13 @@ ACCESS      :   Public
 METHOD      :   GET
 */
 Router.get("/get-ffaculty/:_id", async (req, res) => {
-    try {
-        const faculty = await FacultyFeedbackModel.findById(req.params);
-        return res.json({ faculty });
-    } catch (error) {
-        return res.status(500).json({error: error.message});
-    }
+  try {
+    const faculty = await EventsFeedbackModel.findById(req.params);
+    console.log(faculty);
+    return res.json({ faculty });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /*
@@ -85,19 +86,24 @@ METHOD      :   POST
 */
 
 Router.post("/add-faculty-for-feedback", async (req, res) => {
-    try {
-        const data = await req.body.facultyData;
-        console.log(data);
-        // const isAvailable = await FacultyFeedbackModel.find({"name": data.name});
-        // console.log(isAvailable);
-        // if(isAvailable) {
-        //     throw Error("Faculty already exist");
-        // }
-        const ffb = await FacultyFeedbackModel.create(data)
-        res.json({ ffb })
-    } catch (error) {
-        res.status(500).json({error: error.message});
+  try {
+    const data = await req.body.facultyData;
+    console.log(data);
+    const isAvailable = await EventsFeedbackModel.find({
+      name: data.name,
+    });
+    console.log(isAvailable.length);
+    if (isAvailable.length > 0) {
+      throw Error("Event Name already exist");
     }
+    const ffb = await EventsFeedbackModel.create(data);
+    console.log(ffb);
+    return res
+      .status(200)
+      .json({ message: "Feedback Form Added Successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 /*
 ROUTE       :   /update-feedback-faculty
@@ -109,7 +115,7 @@ METHOD      :   PUT
 Router.put("/update-feedack-faculty", async (req, res) => {
     try {
         const data = req.body.facultyData;
-        await FacultyFeedbackModel.findOneAndUpdate(
+        await EventsFeedbackModel.findOneAndUpdate(
             { _id: data._id },
             { $set: data }
         );
@@ -131,7 +137,7 @@ METHOD      :   DELETE
 Router.delete("/delete-faculty-feedback/:_id", async (req, res) => {
     try {
         const _id = req.params;
-        await FacultyFeedbackModel.findByIdAndDelete(_id);
+        await EventsFeedbackModel.findByIdAndDelete(_id);
         await FeedbackModel.deleteMany({ faculty_id: _id });
         res.json({ message: "Deleted Successfully" });
         

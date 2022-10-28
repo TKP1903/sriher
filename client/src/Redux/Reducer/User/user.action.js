@@ -29,7 +29,6 @@ export const getAllUsers = () => async (dispatch) => {
         }).then((response) => {
             return response;
         });        
-        console.log(userList);
         return dispatch({ type: ALL_USERS, payload: userList.data });
     } catch (error) {
         if(error.response.status === 500) {
@@ -71,8 +70,6 @@ export const addUser = (userData) => async (dispatch) => {
 }
 export const updateUserData = (userData) => async (dispatch) => {
     try {
-        console.log("USERRRRRRRRRRRRRRRRRRRRRRRRRRR");
-        console.log(userData);
         const user = await await axios({
             method: "PUT",
             url: `${API_URL}/user/update`,
@@ -117,7 +114,6 @@ export const getMySelf = () => async (dispatch) => {
         }).then((response) => {
             return response;
         });        
-        console.log(User);
         return dispatch({ type: SELF, payload: User.data });
     } catch (error) {
         if(error.response.status === 500) {

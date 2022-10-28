@@ -9,87 +9,141 @@ import { updateFeedbacFacultyData, getSpecificFeedback } from '../../../Redux/Re
 
 const UpdateFeedbackFaculty = () => {
     const { type } = useParams();
-    const [facultyData, setFacultyData] = useState([]);  
+    const [feedbackFormData, setFeedbackFormData] = useState([]);
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getSpecificFeedback(type));
-    }, [])
+      dispatch(getSpecificFeedback(type));
+    }, []);
 
-    const reduxState = useSelector((globalStore) => globalStore.Feedback)
-    console.log(reduxState);
+    const reduxState = useSelector((globalStore) => globalStore.Feedback);
     useEffect(() => {
-      reduxState?.feedback && setFacultyData(reduxState?.feedback.faculty);
-    }, [reduxState]);   
+      reduxState?.feedback && setFeedbackFormData(reduxState?.feedback.faculty);
+    }, [reduxState]);
 
     const submit = () => {
-        dispatch(
-            updateFeedbacFacultyData({
-            ...facultyData,
-          })
-        );
-    } 
+      dispatch(
+        updateFeedbacFacultyData({
+          ...feedbackFormData,
+        })
+      );
+    };
 
-  return (
-    <>
+    return (
+      <>
         <div className="flex flex-col items-end gap-10 bg-white px-4 py-5 border shadow-xl rounded-md">
-            <div className="flex flex-wrap gap-5">
-                <TextField
-                    required
-                    id="outlined-required"
-                    helperText="Faculty name"
-                    value={facultyData?.name}
-                    onChange={(e) => setFacultyData((prev) => ({...prev, name: e.target.value}))}                    
-                />
-                <TextField
-                    required
-                    id="outlined-required"
-                    helperText="Image url"
-                    value={facultyData?.image}
-                    onChange={(e) => setFacultyData((prev) => ({...prev, image: e.target.value}))}                    
-                    fullWidth
-                />
-                <TextField
-                    required
-                    id="outlined-required"
-                    helperText="Degree"
-                    value={facultyData?.degree}
-                    onChange={(e) => setFacultyData((prev) => ({...prev, degree: e.target.value}))}                    
-                />
-                <TextField
-                    required
-                    id="outlined-required"
-                    helperText="Position"
-                    value={facultyData?.position}
-                    onChange={(e) => setFacultyData((prev) => ({...prev, position: e.target.value}))}                    
-                />
-                <TextField
-                    id="status"
-                    select
-                    onChange={(e) => setFacultyData((prev) => ({...prev, feedback_status: e.target.value}))}                    
-                    value={facultyData?.feedback_status}
-                    helperText="Select the status of the student"
-                >
-                    <MenuItem value={"Active"}>Active</MenuItem>
-                    <MenuItem value={"Inactive"}>InActive</MenuItem>
-                </TextField>
+          <div className="flex flex-wrap gap-5">
+            <TextField
+              required
+              className="w-1/2"
+              id="outlined-required"
+              helperText="Faculty name"
+              value={feedbackFormData?.name}
+              onChange={(e) =>
+                setFeedbackFormData((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }))
+              }
+            />
+            <TextField
+              required
+              id="outlined-required"
+              helperText="Image url"
+              value={feedbackFormData?.image}
+              onChange={(e) =>
+                setFeedbackFormData((prev) => ({
+                  ...prev,
+                  image: e.target.value,
+                }))
+              }
+              fullWidth
+            />
+            <div className="flex flex-wrap gap-5 items-center justify-between w-full">
+              <TextField
+                required
+                id="outlined-required"
+                helperText="faculty 1"
+                value={feedbackFormData?.faculty1}
+                onChange={(e) =>
+                  setFeedbackFormData((prev) => ({
+                    ...prev,
+                    faculty1: e.target.value,
+                  }))
+                }
+              />
+              <TextField
+                required
+                id="outlined-required"
+                helperText="faculty 2"
+                value={feedbackFormData?.faculty2}
+                onChange={(e) =>
+                  setFeedbackFormData((prev) => ({
+                    ...prev,
+                    faculty2: e.target.value,
+                  }))
+                }
+              />
+              <TextField
+                required
+                id="outlined-required"
+                helperText="faculty 3"
+                value={feedbackFormData?.faculty3}
+                onChange={(e) =>
+                  setFeedbackFormData((prev) => ({
+                    ...prev,
+                    faculty3: e.target.value,
+                  }))
+                }
+              />
+              <TextField
+                required
+                id="outlined-required"
+                helperText="faculty 4"
+                value={feedbackFormData?.faculty4}
+                onChange={(e) =>
+                  setFeedbackFormData((prev) => ({
+                    ...prev,
+                    faculty4: e.target.value,
+                  }))
+                }
+              />
             </div>
-            <div className="flex flex-row items-center gap-5">
-               <Link to="/admin/feedback"
-                    className="px-2 py-1 bg-rose-700 text-gray-50 rounded-md">
-                    Cancel
-                </Link>
-                <Link to="/admin/feedback"
-                    onClick={submit}
-                    className="px-2 py-1 bg-green-900 text-gray-50 rounded-md"
-                >
-                    Update
-                </Link>
-            </div>
-
+            <TextField
+              className="w-64"
+              id="status"
+              select
+              onChange={(e) =>
+                setFeedbackFormData((prev) => ({
+                  ...prev,
+                  feedback_status: e.target.value,
+                }))
+              }
+              value={feedbackFormData?.feedback_status}
+              helperText={`${feedbackFormData?.feedback_status}`}
+            >
+              <MenuItem value={"Active"}>Active</MenuItem>
+              <MenuItem value={"Inactive"}>InActive</MenuItem>
+            </TextField>
+          </div>
+          <div className="flex flex-row items-center gap-5">
+            <Link
+              to="/admin/feedback"
+              className="px-2 py-1 bg-rose-700 text-gray-50 rounded-md"
+            >
+              Cancel
+            </Link>
+            <Link
+              to="/admin/feedback"
+              onClick={submit}
+              className="px-2 py-1 bg-green-900 text-gray-50 rounded-md"
+            >
+              Update
+            </Link>
+          </div>
         </div>
-    </>
-  )
+      </>
+    );
 }
 
 export default UpdateFeedbackFaculty;

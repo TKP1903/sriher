@@ -23,7 +23,9 @@ const FacultyCard = () => {
           {faculty?.length > 0 ? (
             faculty?.map(
               (data) =>
-                data.status === "Active" && <FacultyCarousal {...data} />
+                data.status === "Active" && (
+                  <FacultyCarousal {...data} key={data.name} />
+                )
             )
           ) : (
             <>Loading .....</>

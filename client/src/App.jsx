@@ -103,7 +103,9 @@ const App = () => {
           />
         </Routes>
       ) : (
-        <></>
+        <div className="w-full h-screen flex items-center justify-center">
+          <span className="text-xl font-bold text-black">UnAuthorized</span>
+        </div>
       )}
     </>
   );
