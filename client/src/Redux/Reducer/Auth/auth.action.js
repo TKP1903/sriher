@@ -18,7 +18,7 @@ export const signIn = (userData) => async (dispatch) => {
     const userRole = User.data.userRole;
     localStorage.setItem("SRCUser", JSON.stringify({ token: User.data.token }));
     if (userRole === "user") {
-      window.location.href = `${CLIENT_URL}/events`;
+      window.location.href = `/events`;
     }
     if (userRole === "admin") {
       window.location.href = "/admin";

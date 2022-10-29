@@ -127,7 +127,7 @@ const SmNavBar = () => {
                 <Link to={"/projects"}>Projects</Link>
               </li> */}
               {reduxState?.user ? (
-                <div className="flex flex-col items-start justify-center gap-4 block px-0 py-2 hover:bg-gray-100 font-bold w-full border">
+                <div className="flex flex-col items-start justify-center gap-4 block px-0 py-2 hover:bg-gray-100 font-bold w-full">
                   <li
                     className={
                       type === "conference" &&

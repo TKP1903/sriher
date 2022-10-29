@@ -19,6 +19,7 @@
     "canvasjs": "^1.8.3",
     "crypto": "^1.0.1",
     "gravatar": "^1.8.2",
+    "jspdf": "^2.5.1",
     "multiselect-react-dropdown": "^2.0.22",
     "pg": "^8.7.3",
     "photoswipe": "^5.2.7",

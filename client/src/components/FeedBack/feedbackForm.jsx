@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   addUserFeedback,
   getFeedback,
 } from "../../Redux/Reducer/Feedback/feedback.action";
 
 const FeedbackhtmlForm = () => {
+  const navigate = useNavigate();
   const [faculty, setFaculty] = useState([
     {
       faculty_id: "",
@@ -38,6 +40,7 @@ const FeedbackhtmlForm = () => {
   const submit = () => {
     console.log({ feedbackData });
     dispatch(addUserFeedback(feedbackData));
+    navigate(`/certificate`);
     //const data = feedbackData;
 
     // const res = await axios.post("http://localhost:4000/feedback/add-feedback", data);

@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 //components
 import PG from "../components/PG/pg";
-import Footer from "../components/footer";
-import NavBar from "../components/Navbar/NavBar";
 
 //Redux actions
 import { getPg } from "../Redux/Reducer/Pg/pg.action";
@@ -20,7 +18,6 @@ const AllPGStudents = () => {
 
   return (
     <>
-      <NavBar />
       <div className="relative top-16 md:top-0 lg:top-20 md:py-10">
         <div className="px-5 md:px-10 lg:mx-44 mb-10">
           <PG />

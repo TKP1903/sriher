@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 //Pages
 import Event from "./Event";
@@ -17,6 +17,7 @@ import Conference from "./conference";
 import SpeakerFeedback from "./speakerFeedback";
 import Brochure from "./brochure";
 import ForgotPassword from "./forgotpassword";
+import CertificateGeneratorByImage from "../certificate";
 
 const Master = () => {
   let { type } = useParams();
@@ -27,6 +28,7 @@ const Master = () => {
       behavior: "smooth",
     });
   }, [type]);
+
   return (
     <div>
       {type === "home" && <Home />}
@@ -38,21 +40,37 @@ const Master = () => {
       {type === "faculty" && <AllFaculty />}
       {type === "visitingfaculty" && <AllVisitingFaculty />}
       {type === "pg" && <AllPGStudents />}
-      {type === "conference" && <Conference />}
-      {type === "feedback" && <SpeakerFeedback />}
       {type === "projects" && <Projects />}
       {type === "login" && <LoginPage />}
       {type === "register" && <RegisterPage />}
       {type === "forgotpassword" && <ForgotPassword />}
 
-      {localStorage.SRCUser ? (
-        type === "profile" && <Profile urlType={"profile"} />
+      {localStorage.SRCUser && type !== "login" && type !== "register" ? (
+        <>
+          {type === "conference" && <Conference />}
+          {type === "feedback" && <SpeakerFeedback />}
+          {type === "profile" && <Profile urlType={"profile"} />}
+          {type === "update-profile" && <Profile urlType={"update-profile"} />}
+          {/* {type === "certificate" && <CertificateGeneratorByImage />} */}
+        </>
       ) : (
-        <div>
-          {type === "profile" && <h1>Please Login to check your profile</h1>}
-        </div>
+        <>
+          {type !== "login" && type !== "register" && (
+            <div className="flex flex-col gap-10 items-center justify-center">
+              <h1 className="text-2xl font-bold text-black pt-20">
+                Please Login to to open the {type} Page
+              </h1>
+              <Link
+                to="/login"
+                className="bg-cyan-400 text-xl font-bold px-5 py-1.5 rounded-md text-gray-50"
+              >
+                Click here to open signin page
+              </Link>
+            </div>
+          )}
+        </>
       )}
-      {localStorage.SRCUser ? (
+      {/* {localStorage.SRCUser ? (
         type === "update-profile" && <Profile urlType={"update-profile"} />
       ) : (
         <div>
@@ -60,7 +78,7 @@ const Master = () => {
             <h1>Please Login to Update your profile</h1>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

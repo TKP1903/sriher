@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
 //Components
-import NavBar from "../components/Navbar/NavBar";
 import OnGoingEvents from "../components/Events/onGoingEvents";
 import CompletedEvents from "../components/Events/completedEvents";
 import DialogMsg from "../components/dialog/dialog.component";
@@ -42,7 +41,6 @@ const Event = () => {
 
   return (
     <>
-      <NavBar />
       <div className="relative top-10 lg:top-20 py-10">
         {type === "cde" ? (
           <div className="px-3 md:px-10 lg:px-0">
