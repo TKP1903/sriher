@@ -6,12 +6,15 @@ import {
   addUserFeedback,
   getFeedback,
 } from "../../Redux/Reducer/Feedback/feedback.action";
-
+import axios from "axios";
+import { API_URL } from "../../key";
 const FeedbackhtmlForm = () => {
   const navigate = useNavigate();
+  const user_id = localStorage.getItem("user_id");
   const [faculty, setFaculty] = useState([
     {
       faculty_id: "",
+      user_id: "",
     },
   ]);
   const [user, setuser] = useState();
@@ -20,6 +23,7 @@ const FeedbackhtmlForm = () => {
 
   const reduxState = useSelector((globalStore) => globalStore.Feedback);
   const userState = useSelector((userStore) => userStore.user);
+
   useEffect(() => {
     reduxState?.feedback && setFaculty(reduxState.feedback.feedbackData);
     userState?.user && setuser(userState.user?.user);
@@ -34,27 +38,46 @@ const FeedbackhtmlForm = () => {
       ...feedbackData,
       [event.target.name]: value,
     });
+    // setFeedbackData({
+    //   ...feedbackData,
+    //   user_id: user._id,
+    // });
   };
 
-  //console.log(feedbackData);
-  const submit = () => {
-    console.log({ feedbackData });
-    dispatch(addUserFeedback(feedbackData));
-    navigate(`/certificate`);
-    //const data = feedbackData;
+  const submit = async () => {
+    try {
+      setFeedbackData({
+        ...feedbackData,
+        user_id: user._id,
+      });
+      localStorage.setItem("cert_name", feedbackData.name);
+      let feedback_event_id;
+      faculty?.map((row) => {
+        if (row.feedback_status === "Active") {
+          feedback_event_id = row._id;
+        }
+      });
+      const result = await axios.post(
+        `${API_URL}/feedback/check-user-feedback`,
+        {
+          user_id: localStorage.getItem("user_id"),
+          feedback_event_id,
+        }
+      );
+      const data_user_feedback = result?.data?.check_feedback.length;
 
-    // const res = await axios.post("http://localhost:4000/feedback/add-feedback", data);
-    // if(res.status === 200) {
-    //     alert("Feedback successfully submitted");
-    // }else{
-    //     alert("Please submit your Feedback again!!");
-    // }
+      dispatch(addUserFeedback(feedbackData));
+      // if (data_user_feedback > 0) {
+      //   alert("You have already submitted the feedback");
+      // } else {
+      //   dispatch(addUserFeedback(feedbackData));
+      //   navigate(`/certificate`);
+      // }
+    } catch (error) {
+      alert(error.message);
+    }
   };
-
-  const send = (_id) => {
-    //setFeedbackData((prev) => ({ ...prev, faculty_id: _id }))
-    //submit();
-  };
+  const checkeUserFeedbacks = async () => {};
   return (
     <div className="flex flex-col items-center justify-center md:mx-10 lg:mx-44">
       <div className="flex flex-row items-center justify-between pb-8 w-full">
@@ -66,7 +89,10 @@ const FeedbackhtmlForm = () => {
         faculty?.map(
           (row) =>
             row.feedback_status === "Active" && (
-              <div className="flex flex-col md:flex-row-reverse items-center w-full md:items-start justify-around bg-cyan-900 py-6 border border-gray-200 shadow lg:mx-44 rounded-lg">
+              <div
+                key={row._id}
+                className="flex flex-col md:flex-row-reverse items-center w-full md:items-start justify-around bg-cyan-900 py-6 border border-gray-200 shadow lg:mx-44 rounded-lg"
+              >
                 <div className="mx-6 md:mx-1 md:w-1/2">
                   <div className="w-full md:px-10 lg:px-20">
                     <img

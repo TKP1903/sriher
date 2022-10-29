@@ -49,7 +49,6 @@ const App = () => {
 
   const reduxState = useSelector((globalStore) => globalStore.user.user);
   const user_role = reduxState?.user?.userRole;
-  const userName = reduxState?.user?.fullName;
   console.log(reduxState?.user?.fullName);
   localStorage.setItem("user_id", reduxState?.user?._id);
 
@@ -63,7 +62,7 @@ const App = () => {
           <Route path="/feedback/:type" element={<SpeakerFeedback />} />
           <Route
             path="/certificate"
-            element={<CertificateGeneratorByImage userName={userName} />}
+            element={<CertificateGeneratorByImage />}
           />
           <Route
             path="/certificate/:type"

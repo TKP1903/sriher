@@ -32,16 +32,26 @@ METHOD      :   POST
 */
 
 Router.post("/add-user-feedback", async (req, res) => {
-    try {
-        const data = req.body.feedbackData;
-        console.log(data);
-        await FeedbackModel.create(data)
-        return res.status(200).json({ message: "Your Feedback is successfully submitted" })
-    } catch (error) {
-        res.status(500).json({error: error.message});
+  try {
+    const data = req.body.feedbackData;
+    console.log(data);
+    const checkuserFeedback = await FeedbackModel.find({
+      user_id: data.user_id,
+    });
+    console.log("00000000000000000");
+    console.log({ checkuserFeedback });
+    console.log(checkuserFeedback.length);
+    if (checkuserFeedback.length > 0) {
+      throw new Error("Feedback already submmited");
     }
+    await FeedbackModel.create(data);
+    return res
+      .status(200)
+      .json({ message: "Your Feedback is successfully submitted" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
-
 
 /*
 show the list of faculty in the admin
@@ -52,13 +62,13 @@ ACCESS      :   Public
 METHOD      :   GET
 */
 Router.get("/getfacultyfeedbackdata", async (req, res) => {
-    try {        
-        const feedbackData = await EventsFeedbackModel.find({});
-        const feedback = await FeedbackModel.find({});
-        return res.status(200).json({ feedbackData, feedback });
-    } catch (error) {
-        res.status(500).json({error: error.message});
-    }
+  try {
+    const feedbackData = await EventsFeedbackModel.find({});
+    const feedback = await FeedbackModel.find({});
+    return res.status(200).json({ feedbackData, feedback });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 /*
 ROUTE       :   /_id
@@ -72,6 +82,28 @@ Router.get("/get-ffaculty/:_id", async (req, res) => {
     const faculty = await EventsFeedbackModel.findById(req.params);
     console.log(faculty);
     return res.json({ faculty });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+/*
+ROUTE       :   /check-user-feedback
+DESCRIPTION :   check whether the user submitted the feedback or not
+PARAMS      :   NO
+ACCESS      :   Public
+METHOD      :   POST
+*/
+Router.post("/check-user-feedback", async (req, res) => {
+  try {
+    console.log("================");
+    const { user_id, feedback_event_id } = req.body;
+    const check_feedback = await FeedbackModel.find({
+      user_id,
+      feedback_event_id,
+    });
+    console.log(check_feedback);
+    console.log({ user_id, feedback_event_id });
+    return res.status(200).json({ check_feedback });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

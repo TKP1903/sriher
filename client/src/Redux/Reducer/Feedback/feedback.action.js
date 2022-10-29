@@ -58,16 +58,17 @@ export const getSpecificFeedback = (_id) => async (dispatch) => {
 //for adding the user Feedback
 export const addUserFeedback = (feedbackData) => async (dispatch) => {
     try {
-        console.log(feedbackData);
-        const feedback = await axios({
-            method: "POST",
-            url: `${API_URL}/feedback/add-user-feedback`,
-            data: {feedbackData},
-        }).then((response) => {
-            return response;
-        });
-        window.location.reload(false);
-        return dispatch({ type: ADD_FEEDBACK, payload:  feedback.data});
+      console.log(feedbackData);
+      const feedback = await axios({
+        method: "POST",
+        url: `${API_URL}/feedback/add-user-feedback`,
+        data: { feedbackData },
+      }).then((response) => {
+        return response;
+      });
+      window.location.href = `/certificate`;
+      // window.location.reload(false);
+      return dispatch({ type: ADD_FEEDBACK, payload: feedback.data });
     } catch (error) {
         if(error.response.status === 500) {
             alert(error.response.data.error);

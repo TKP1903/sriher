@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState, useSelector } from "react";
 import { useParams } from "react-router-dom";
 import templates from "./data";
 
-function CertificateGeneratorByImage(userName) {
+function CertificateGeneratorByImage() {
+  const userName = localStorage.getItem("cert_name");
   const canvas = useRef();
   let ctx = null;
   const data = [
@@ -74,7 +75,7 @@ function CertificateGeneratorByImage(userName) {
       textDrawProperties.map((text, index) => {
         ctx.font = `${text.size}pt Montserrat`;
         ctx.fillStyle = "black";
-        ctx.fillText(userName?.userName, text.x, text.y);
+        ctx.fillText(userName, text.x, text.y);
       });
       forceUpdate(true);
     };
@@ -84,7 +85,7 @@ function CertificateGeneratorByImage(userName) {
     <div className="pt-40">
       <div className="w-full flex items-center justify-center">
         <button
-          className="text-gray-50 bg-blue-800 px-2 py-1 rounded-md cursor-pointer text-center font-bold"
+          className="text-gray-50 bg-teal-700 p-2 rounded-md cursor-pointer text-center font-bold"
           title="Download"
           onClick={() => {
             const c = canvas.current;
