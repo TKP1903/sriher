@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import React, { useEffect, useRef, useState, useSelector } from "react";
 import { useParams } from "react-router-dom";
+import NavBar from "./components/Navbar/NavBar";
 import templates from "./data";
 
 function CertificateGeneratorByImage() {
@@ -82,46 +83,49 @@ function CertificateGeneratorByImage() {
   }
 
   return (
-    <div className="pt-40">
-      <div className="w-full flex items-center justify-center">
-        <button
-          className="text-gray-50 bg-teal-700 p-2 rounded-md cursor-pointer text-center font-bold"
-          title="Download"
-          onClick={() => {
-            const c = canvas.current;
-            downloadPdf(c.toDataURL("png"), "certificate-pdf");
-            // downloadImage(c.toDataURL('png'), 'certificate-image')
-          }}
-        >
-          Download your certificate
-        </button>
-      </div>
-      <div className="">
-        <canvas ref={canvas}></canvas>
-        {!open ? (
-          <div
-            color="primary"
+    <>
+      <NavBar />
+      <div className="pt-16 md:py-40 ">
+        <div className="w-full flex items-center justify-center">
+          <button
+            className="text-gray-50 bg-teal-700 p-2 rounded-md cursor-pointer text-center font-bold"
+            title="Download"
             onClick={() => {
-              setOpen(!open);
+              const c = canvas.current;
+              downloadPdf(c.toDataURL("png"), "certificate-pdf");
+              // downloadImage(c.toDataURL('png'), 'certificate-image')
             }}
           >
-            {open ? <div></div> : <div></div>}
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
-      {/* <div
+            Download your certificate
+          </button>
+        </div>
+        <div className="">
+          <canvas ref={canvas}></canvas>
+          {!open ? (
+            <div
+              color="primary"
+              onClick={() => {
+                setOpen(!open);
+              }}
+            >
+              {open ? <div></div> : <div></div>}
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        {/* <div
         title="Download"
         onClick={() => {
           const c = canvas.current;
           downloadPdf(c.toDataURL("png"), "certificate-pdf");
           // downloadImage(c.toDataURL('png'), 'certificate-image')
         }}
-      >
+        >
         Download
       </div> */}
-    </div>
+      </div>
+    </>
   );
 }
 

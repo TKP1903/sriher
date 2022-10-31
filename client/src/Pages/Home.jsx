@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <>
-      {/* <NavBar /> */}
+      <NavBar />
       <div className="bg-blue-50 relative top-10 lg:top-20 py-0 pb-10">
         <div className="">
           <HeroCarousals />

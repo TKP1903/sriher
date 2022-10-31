@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 //components
 import FacultyCard from "../components/Faculty/faculty.Component";
+import NavBar from "../components/Navbar/NavBar";
 
 //Redux action
 import { getFaculty } from "../Redux/Reducer/Faculty/faculty.action";
@@ -16,6 +17,7 @@ const AllFaculty = () => {
 
   return (
     <>
+      <NavBar />
       <div className="relative top-16 md:top-0 lg:top-20 md:py-10">
         <div>
           <FacultyCard />

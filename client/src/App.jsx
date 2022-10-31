@@ -57,7 +57,7 @@ const App = () => {
   return (
     <>
       <div>
-        <NavBar />
+        {/* <NavBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:type" element={<Master />} />

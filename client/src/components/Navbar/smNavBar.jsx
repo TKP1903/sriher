@@ -174,6 +174,14 @@ const SmNavBar = () => {
                   </li>
                   <li
                     className={
+                      type === "certificates-page" &&
+                      "bg-slate-900 text-center w-full border border-grey-50 shadow-xl py-1 px-2 rounded-sm text-blue-50 transition duration-700 ease-in-out delay-150"
+                    }
+                  >
+                    <Link to={"/certificates-page"}>Certificates</Link>
+                  </li>
+                  <li
+                    className={
                       type === "feedback" &&
                       "bg-slate-900 text-center w-full border border-grey-50 shadow-xl py-1 px-2 rounded-sm text-blue-50 transition duration-700 ease-in-out delay-150"
                     }

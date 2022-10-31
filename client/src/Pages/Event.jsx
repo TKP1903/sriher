@@ -9,6 +9,7 @@ import DialogMsg from "../components/dialog/dialog.component";
 //Redux actions
 import { getEvents, getUserEvent } from "../Redux/Reducer/Events/event.action";
 import CDE from "../components/Events/cde";
+import NavBar from "../components/Navbar/NavBar";
 
 const Event = () => {
   const { type } = useParams();
@@ -41,6 +42,7 @@ const Event = () => {
 
   return (
     <>
+      <NavBar />
       <div className="relative top-10 lg:top-20 py-10">
         {type === "cde" ? (
           <div className="px-3 md:px-10 lg:px-0">

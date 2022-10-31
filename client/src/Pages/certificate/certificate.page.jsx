@@ -13,6 +13,7 @@ import Paper from "@mui/material/Paper";
 
 import { API_URL } from "../../key";
 import { getMySelf } from "../../Redux/Reducer/User/user.action";
+import NavBar from "../../components/Navbar/NavBar";
 
 const CertificatePage = () => {
   const [user, setuser] = useState();
@@ -51,6 +52,7 @@ const CertificatePage = () => {
 
   return (
     <>
+      <NavBar />
       <div className="relative top-10 lg:top-20 py-5 lg:py-10">
         <div className="px-10 py-5 lg:px-44 md:py-20">
           <div className="pb-8 w-full">
