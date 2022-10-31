@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const FeedbackSchema = new mongoose.Schema({
-  feedback_event_id: { type: String },
-  user_id: { type: String },
+  feedback_event_id: { type: String, ref: "eventsFeedback" },
+  user_id: { type: String, ref: "Users" },
   name: { type: String },
   email: { type: String },
   phoneNumber: { type: Number },

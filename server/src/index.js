@@ -25,6 +25,7 @@ import PgStudents from "./API/PGStudents/index";
 import User from "./API/User/index";
 import Feedback from "./API/Feedback/index";
 import Payment from "./API/Payments/index";
+import Certificates from "./API/certificates/index";
 import sendMail from "./API/Email";
 
 const app = express();
@@ -44,16 +45,6 @@ app.use(
     cookie: { secure: true },
   })
 );
-// app.use(session({
-//   cookie:{
-//       secure: true,
-//       maxAge:60000
-//          },
-//   //store: new RedisStore(),
-//   secret: 'secret',
-//   saveUninitialized: true,
-//   resave: false
-//   }));
 
 //passport configuration
 routeConfig(passport);
@@ -71,11 +62,12 @@ app.use("/achievements", Achievememts);
 app.use("/user", User);
 app.use("/feedback", Feedback);
 app.use("/payment", Payment);
+app.use("/certificates", Certificates);
 
-app.get("/send", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     // await sendMail();
-    res.status(200).json({ message: "email sent successfully" });
+    res.status(200).json({ message: "Welcome to Oralpath!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -18,6 +18,7 @@ import SpeakerFeedback from "./speakerFeedback";
 import Brochure from "./brochure";
 import ForgotPassword from "./forgotpassword";
 import CertificateGeneratorByImage from "../certificate";
+import CertificatePage from "./certificate/certificate.page";
 
 const Master = () => {
   let { type } = useParams();
@@ -51,6 +52,7 @@ const Master = () => {
           {type === "feedback" && <SpeakerFeedback />}
           {type === "profile" && <Profile urlType={"profile"} />}
           {type === "update-profile" && <Profile urlType={"update-profile"} />}
+          {type === "certificates-page" && <CertificatePage />}
           {/* {type === "certificate" && <CertificateGeneratorByImage />} */}
         </>
       ) : (

@@ -29,6 +29,42 @@ const SmNavBar = () => {
 //   useEffect(() => {
 //   reduxState?.user && setUser(reduxState?.user);
 //  }, [reduxState]);
+  const navList = [
+    {
+      name: "Home",
+      link: "home",
+    },
+    {
+      name: "Events",
+      link: "events",
+    },
+    {
+      name: "Faculty",
+      link: "faculty",
+    },
+    {
+      name: "Visiting Faculty",
+      link: "visitingfaculty",
+    },
+    {
+      name: "PG",
+      link: "pg",
+    },
+  ];
+  const userNavList = [
+    {
+      name: "Conference",
+      link: "conference",
+    },
+    {
+      name: "Feedback",
+      link: "feedback",
+    },
+    {
+      name: "Certificates",
+      link: "certificates-page",
+    },
+  ];
 
  const signOutHandler = () => {
   window.location.reload(false);

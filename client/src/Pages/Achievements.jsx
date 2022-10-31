@@ -20,7 +20,6 @@ const Achievements = () => {
 
   return (
     <>
-      <NavBar />
       <div className="relative top-10 lg:top-20 py-5 lg:py-10">
         <div className="md:mt-5 lg:mt-10 mx-2 md:mx-20 lg:mx-44">
           <UGStudents />

@@ -173,6 +173,17 @@ const LgNav = () => {
             </span>
             <span
               className={
+                type === "certificates-page"
+                  ? "bg-teal-800 border border-teal-500 border-grey-50 shadow-2xl py-1 px-2 rounded-sm text-blue-50 transition duration-700 ease-in-out delay-150"
+                  : ""
+              }
+            >
+              <Link to={"/certificates-page"} id="nav_items">
+                Certificates
+              </Link>
+            </span>
+            <span
+              className={
                 type === "feedback"
                   ? "bg-teal-800 border border-teal-500 border-grey-50 shadow-2xl py-1 px-2 rounded-sm text-blue-50 transition duration-700 ease-in-out delay-150"
                   : ""

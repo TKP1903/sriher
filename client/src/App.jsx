@@ -7,6 +7,7 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+
 //Pages
 import Master from "./Pages/master";
 import Home from "./Pages/Home";
@@ -30,6 +31,7 @@ import DognutChart from "./components/AdminComponents/Feedback/dognutChart";
 import SpeakerFeedback from "./Pages/speakerFeedback";
 import NavBar from "./components/Navbar/NavBar";
 import CertificateGeneratorByImage from "./certificate";
+
 
 // axios global settings
 if (localStorage.SRCUser) {

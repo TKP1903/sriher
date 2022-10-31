@@ -37,9 +37,8 @@ Router.post("/add-user-feedback", async (req, res) => {
     console.log(data);
     const checkuserFeedback = await FeedbackModel.find({
       user_id: data.user_id,
+      feedback_event_id: data.feedback_event_id,
     });
-    console.log("00000000000000000");
-    console.log({ checkuserFeedback });
     console.log(checkuserFeedback.length);
     if (checkuserFeedback.length > 0) {
       throw new Error("Feedback already submmited");
